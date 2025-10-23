@@ -1,4 +1,4 @@
-// --- Referencias a Elementos HTML ---
+// --- Referencias a Elementos HTML (Se declaran fuera del DOMContentLoaded para accesibilidad global) ---
 const frecuenciaInput = document.getElementById('frecuencia');
 const amplitudInput = document.getElementById('amplitud');
 const medioSelect = document.getElementById('medio');
@@ -16,7 +16,15 @@ const speedOfLight = 300; // Velocidad de la luz simulada (para escala)
 
 // Función auxiliar para obtener el valor de una variable CSS
 function var2css(cssVar) {
-    return getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
+    // Es posible que necesitemos una forma más robusta si esta falla en algunos navegadores
+    try {
+        return getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
+    } catch (e) {
+        // Fallback a un color directo si la variable CSS falla
+        if (cssVar === 'var(--color-wave)') return '#ffc107'; 
+        if (cssVar === 'var(--color-secondary)') return '#28a745';
+        return '#ccc';
+    }
 }
 
 // --- Ajuste del Canvas (CRUCIAL) ---
@@ -45,18 +53,17 @@ function updateValues() {
 // --- Lógica de Dibujo de la Onda (Función Principal) ---
 function drawWave() {
     // 1. Obtener parámetros
-    const f = parseFloat(frecuenciaInput.value) * 0.1; // Frecuencia escalada
-    const A = parseFloat(amplitudInput.value);          // Amplitud
-    const n = parseFloat(medioSelect.value);            // Índice de refracción
+    const f = parseFloat(frecuenciaInput.value) * 0.1; 
+    const A = parseFloat(amplitudInput.value);          
+    const n = parseFloat(medioSelect.value);            
     
-    // Calcular longitud de onda simulada
     const lambda = speedOfLight / (n * f); 
 
     // Dimensiones del Canvas
     const W = canvas.width;
     const H = canvas.height;
     const centerY = H / 2;
-    const scaleY = H / (2 * 2.5); // Escalado de amplitud
+    const scaleY = H / (2 * 2.5); 
 
     // 2. Limpiar el Canvas
     ctx.fillStyle = '#111';
@@ -80,7 +87,6 @@ function drawWave() {
 
     // Loop para dibujar la curva punto por punto
     for (let x = 0; x < W; x++) {
-        // Mapeo de la coordenada de píxel a una coordenada física simulada
         const normalizedX = (x / W) * (15 * lambda); 
 
         // Ecuación de onda: Y = A * sin( k*x - ω*t )
@@ -127,8 +133,14 @@ function toggleSimulation() {
     }
 }
 
-// --- Event Listeners y Inicialización ---
+// --- Event Listeners y Inicialización (Se ejecuta cuando el DOM está completamente cargado) ---
 document.addEventListener('DOMContentLoaded', () => {
+    // Asegurar que el canvas y el contexto existen
+    if (!canvas || !ctx) {
+        console.error("Error: No se pudo obtener el elemento canvas o su contexto.");
+        return; // Salir si el canvas no se encuentra
+    }
+    
     // 1. Asignar los listeners de eventos para interactividad
     frecuenciaInput.addEventListener('input', updateValues);
     amplitudInput.addEventListener('input', updateValues);
@@ -137,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Inicializar el tamaño del canvas y los valores
     resizeCanvas();
-    updateValues();
+    updateValues(); // Esto dibujará la onda estática inicial
 });
 
 // Listener para redimensionamiento de la ventana
