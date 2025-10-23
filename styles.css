@@ -72,9 +72,9 @@ h2 {
 }
 
 .control-group label {
-    /* Usamos flexbox o display inline-flex para alinear bien la etiqueta y el botón ? */
+    /* Usamos flexbox para alinear la etiqueta y el botón ? */
     display: inline-flex; 
-    align-items: center; /* Centra verticalmente el texto y el botón ? */
+    align-items: center; 
     margin-bottom: 5px;
     font-weight: bold;
 }
@@ -131,13 +131,13 @@ input[type="range"], select {
     font-size: 12px;
     font-weight: bold;
     cursor: pointer;
-    margin-left: 8px; /* Separación de la etiqueta */
+    margin-left: 8px; 
     padding: 0;
     /* Ajustes para centrar el '?' dentro del círculo */
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0; /* Evita que el botón se comprima */
+    flex-shrink: 0; 
 }
 
 .info-btn:hover {
@@ -146,7 +146,7 @@ input[type="range"], select {
 
 /* Estilo para el texto de información */
 .info-text {
-    background-color: #e9f7ef; /* Fondo muy claro para destacar */
+    background-color: #e9f7ef; 
     border-left: 3px solid var(--color-secondary);
     padding: 10px;
     margin-top: 10px;
