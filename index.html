@@ -8,133 +8,306 @@
     <style>
         /* Variables CSS para manejo de color */
         :root {
-            --color-primary: #007bff; /* Azul */
-            --color-secondary: #28a745; /* Verde */
-            --color-background: #f4f7f6; /* Gris claro */
-            --color-card-bg: #ffffff; /* Blanco */
-            --color-text: #343a40; /* Gris oscuro */
-            --color-wave: #ffc107; /* Amarillo para la onda */
+            --color-primary: #6366f1;
+            --color-primary-dark: #4f46e5;
+            --color-secondary: #10b981;
+            --color-secondary-dark: #059669;
+            --color-background: #0f172a;
+            --color-card-bg: #1e293b;
+            --color-card-bg-light: #334155;
+            --color-text: #e2e8f0;
+            --color-text-muted: #94a3b8;
+            --color-wave: #fbbf24;
+            --color-accent: #ec4899;
         }
 
         /* Estilos Globales */
-        body {
-            font-family: 'Arial', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: var(--color-background);
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: var(--color-text);
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         header {
-            background-color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
             color: white;
-            padding: 20px 0;
+            padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 50 Q 25 30, 50 50 T 100 50" stroke="rgba(255,255,255,0.1)" fill="none" stroke-width="2"/></svg>');
+            opacity: 0.3;
         }
 
         header h1 {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 700;
+            position: relative;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            position: relative;
         }
 
         .container {
-            display: flex;
-            max-width: 1200px;
-            margin: 20px auto;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            max-width: 1400px;
+            margin: 30px auto;
             padding: 0 20px;
-            gap: 20px;
+            gap: 25px;
         }
 
         /* Estilos de Secciones y Controles */
         .controls, .visualization {
-            background-color: var(--color-card-bg);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            background: var(--color-card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .controls {
-            flex: 1; 
-            min-width: 280px;
-        }
-
-        .visualization {
-            flex: 3;
+            backdrop-filter: blur(10px);
         }
 
         h2 {
-            color: var(--color-primary);
-            border-bottom: 2px solid var(--color-secondary);
-            padding-bottom: 5px;
-            margin-top: 0;
-            margin-bottom: 15px;
+            color: var(--color-wave);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            border-bottom: 2px solid var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         /* Estilos para los Controles */
         .control-group {
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--color-card-bg-light);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .control-group:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
         }
 
         .control-group label {
-            /* Necesario para alinear el "?" con el texto del label */
             display: inline-flex; 
             align-items: center; 
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--color-text);
+            font-size: 0.95em;
         }
 
-        input[type="range"], select {
+        input[type="range"] {
             width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            box-sizing: border-box;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+            outline: none;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+            margin-top: 10px;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px var(--color-primary);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            background: var(--color-background);
+            color: var(--color-text);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:hover, select:focus {
+            border-color: var(--color-primary);
+            outline: none;
+        }
+
+        .valor-display {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-left: 10px;
+            min-width: 50px;
+            text-align: center;
         }
 
         /* Estilos para el Botón principal */
         #iniciar-simulacion {
-            background-color: var(--color-secondary);
+            background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-dark));
             color: white;
             border: none;
-            padding: 10px 15px;
-            margin-top: 10px;
-            border-radius: 4px;
+            padding: 15px 25px;
+            margin-top: 20px;
+            border-radius: 12px;
             cursor: pointer;
             width: 100%;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         #iniciar-simulacion:hover {
-            background-color: #218838; 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        #iniciar-simulacion:active {
+            transform: translateY(0);
         }
 
         /* Estilos para el Área de Visualización */
         #wave-display {
-            background-color: #111; 
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
             border: 2px solid var(--color-wave);
-            border-radius: 4px;
+            border-radius: 12px;
             overflow: hidden;
             display: block;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.3), inset 0 0 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        #wave-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--color-wave), transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
         }
 
         #wave-canvas {
             display: block;
             width: 100%;
-            height: 350px; 
+            height: 400px;
+        }
+
+        /* Panel de Explicación */
+        #explicacion-medio {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            border-left: 4px solid var(--color-primary);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #explicacion-medio h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: var(--color-wave);
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #texto-explicacion {
+            margin: 0;
+            line-height: 1.8;
+            color: var(--color-text);
+        }
+
+        #texto-explicacion strong {
+            color: var(--color-wave);
+        }
+
+        #texto-explicacion em {
+            color: var(--color-text-muted);
+            font-size: 0.95em;
         }
 
         /* Estilos Específicos para el Botón de Información (?) */
         .info-btn {
-            background: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
             color: white;
             border: none;
             border-radius: 50%; 
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             text-align: center;
             font-size: 12px;
             font-weight: bold;
@@ -144,26 +317,40 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-shrink: 0; 
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
         }
 
         .info-btn:hover {
-            background-color: #0056b3; 
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
         }
 
-        /* Estilo para el texto de información (OCULTO por defecto) */
+        /* Estilo para el texto de información */
         .info-text {
             display: none; 
-            background-color: #e9f7ef; 
+            background: rgba(16, 185, 129, 0.1);
             border-left: 3px solid var(--color-secondary);
-            padding: 10px;
-            margin-top: 10px;
+            padding: 12px;
+            margin-top: 12px;
             font-size: 0.9em;
             color: var(--color-text);
+            border-radius: 8px;
+            animation: slideDown 0.3s ease;
         }
 
-        /* REGLA CRÍTICA CSS PURO: Cuando el checkbox (input.info-toggle) está checked, muestra el párrafo adyacente (.info-text) */
-        /* Usamos el selector de hermanos general (~) */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         #check-frecuencia:checked ~ #info-frecuencia,
         #check-amplitud:checked ~ #info-amplitud {
             display: block;
@@ -172,23 +359,61 @@
         /* Pie de Página */
         footer {
             text-align: center;
-            padding: 15px 0;
-            margin-top: 20px;
-            border-top: 1px solid #ccc;
-            color: #6c757d;
+            padding: 25px 0;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--color-text-muted);
+            font-size: 0.9em;
+        }
+
+        /* Animaciones sutiles */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .controls, .visualization {
+            animation: fadeIn 0.6s ease;
+        }
+
+        .visualization {
+            animation-delay: 0.1s;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2em;
+            }
         }
 
         @media (max-width: 768px) {
+            header {
+                padding: 30px 15px;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
             .container {
-                flex-direction: column; 
+                padding: 0 15px;
+                gap: 20px;
+            }
+            
+            #wave-canvas {
+                height: 300px;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Simulador de Ondas Electromagnéticas 🌌</h1>
-        <p>Ajusta los parámetros y observa la propagación en diferentes medios.</p>
+        <h1>🌌 Simulador de Ondas Electromagnéticas</h1>
+        <p>Ajusta los parámetros y observa la propagación en diferentes medios</p>
     </header>
 
     <main class="container">
@@ -199,13 +424,15 @@
                 <input type="checkbox" id="check-frecuencia" class="info-toggle" hidden>
                 <label for="check-frecuencia" class="info-btn">?</label> 
                 
-                <label for="frecuencia">Frecuencia (Hz):</label>
+                <label for="frecuencia">
+                    Frecuencia (Hz)
+                    <span id="frecuencia-valor" class="valor-display">50</span>
+                </label>
                 <input type="range" id="frecuencia" name="frecuencia" min="10" max="100" value="50">
-                <span id="frecuencia-valor">50</span>
                 
                 <p class="info-text" id="info-frecuencia">
-                    La **Frecuencia (f)** es el número de oscilaciones que pasan por un punto en un segundo. 
-                    A mayor frecuencia, la **Longitud de Onda (λ) disminuye**, haciendo la onda más comprimida.
+                    La <strong>Frecuencia (f)</strong> es el número de oscilaciones que pasan por un punto en un segundo. 
+                    A mayor frecuencia, la <strong>Longitud de Onda (λ) disminuye</strong>, haciendo la onda más comprimida.
                 </p>
             </div>
 
@@ -213,28 +440,30 @@
                 <input type="checkbox" id="check-amplitud" class="info-toggle" hidden>
                 <label for="check-amplitud" class="info-btn">?</label> 
 
-                <label for="amplitud">Amplitud (Unidades):</label>
+                <label for="amplitud">
+                    Amplitud (Unidades)
+                    <span id="amplitud-valor" class="valor-display">1.0</span>
+                </label>
                 <input type="range" id="amplitud" name="amplitud" min="0.1" max="2" step="0.1" value="1.0">
-                <span id="amplitud-valor">1.0</span>
 
                 <p class="info-text" id="info-amplitud">
-                    La **Amplitud (A)** es la altura máxima de la onda respecto al punto de equilibrio. 
-                    Determina la **intensidad** o **energía** de la onda electromagnética (cuán "fuerte" es).
+                    La <strong>Amplitud (A)</strong> es la altura máxima de la onda respecto al punto de equilibrio. 
+                    Determina la <strong>intensidad</strong> o <strong>energía</strong> de la onda electromagnética.
                 </p>
             </div>
             
             <h2>🌐 Medio de Propagación</h2>
             <div class="control-group">
-                <label for="medio">Seleccionar Medio (Índice de Refracción n):</label>
+                <label for="medio">Seleccionar Medio (Índice de Refracción n)</label>
                 <select id="medio" name="medio">
-                    <option value="1.00">Vacío (n≈1.00)</option>
-                    <option value="1.0003">Aire (n≈1.0003)</option>
-                    <option value="1.33">Agua (n≈1.33)</option>
-                    <option value="1.52">Vidrio (n≈1.52)</option>
+                    <option value="1.00">🌌 Vacío (n≈1.00)</option>
+                    <option value="1.0003">🌬️ Aire (n≈1.0003)</option>
+                    <option value="1.33">💧 Agua (n≈1.33)</option>
+                    <option value="1.52">🔍 Vidrio (n≈1.52)</option>
                 </select>
             </div>
             
-            <button id="iniciar-simulacion">Iniciar Simulación</button>
+            <button id="iniciar-simulacion">▶ Iniciar Simulación</button>
         </section>
 
         <section class="visualization">
@@ -243,9 +472,9 @@
                 <canvas id="wave-canvas"></canvas>
             </div>
             
-            <div id="explicacion-medio" style="margin-top: 20px; padding: 15px; background-color: #e3f2fd; border-left: 4px solid var(--color-primary); border-radius: 4px;">
-                <h3 style="margin-top: 0; color: var(--color-primary);">📖 Comportamiento de la Onda</h3>
-                <p id="texto-explicacion" style="margin: 0; line-height: 1.8;">
+            <div id="explicacion-medio">
+                <h3>📖 Comportamiento de la Onda</h3>
+                <p id="texto-explicacion">
                     Selecciona un medio para ver cómo afecta la propagación de la onda electromagnética.
                 </p>
             </div>
@@ -253,7 +482,7 @@
     </main>
 
     <footer>
-        <p>© 2025 Simulador EM - HTML, CSS & JS</p>
+        <p>© 2025 Simulador de Ondas Electromagnéticas | Desarrollado con HTML, CSS & JavaScript</p>
     </footer>
     
     <script>
@@ -266,28 +495,26 @@
         const iniciarBoton = document.getElementById('iniciar-simulacion');
         const canvas = document.getElementById('wave-canvas');
         const textoExplicacion = document.getElementById('texto-explicacion');
-        
-        // --- El código de los botones de ayuda NO está aquí. Es manejado por CSS. ---
 
         // --- Variables de Simulación ---
         let ctx;
         let animationFrameId;
         let isSimulating = false;
         let time = 0;
-        let drawProgress = 0; // Progreso del dibujo (0 a 1)
+        let drawProgress = 0;
 
         // Función auxiliar para obtener el valor de una variable CSS
         function var2css(cssVar) {
             try {
                 return getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
             } catch (e) {
-                if (cssVar === 'var(--color-wave)') return '#ffc107'; 
-                if (cssVar === 'var(--color-secondary)') return '#28a745';
+                if (cssVar === 'var(--color-wave)') return '#fbbf24'; 
+                if (cssVar === 'var(--color-secondary)') return '#10b981';
                 return '#ccc';
             }
         }
 
-        // --- Ajuste del Canvas (CRUCIAL) ---
+        // --- Ajuste del Canvas ---
         function resizeCanvas() {
             if (!canvas) return;
             canvas.width = canvas.offsetWidth; 
@@ -305,13 +532,13 @@
             let explicacion = '';
             
             if (n === 1.00) {
-                explicacion = `<strong>🌌 ${medioNombre}:</strong> En el vacío, las ondas electromagnéticas viajan a su velocidad máxima: <strong>300,000 km/s</strong> (velocidad de la luz, c). La longitud de onda es la <strong>más larga posible</strong> para la frecuencia dada, ya que no hay materia que interactúe con la onda. Este es el estado más "puro" de propagación de luz.`;
+                explicacion = `<strong>${medioNombre}:</strong> En el vacío, las ondas electromagnéticas viajan a su velocidad máxima: <strong>300,000 km/s</strong> (velocidad de la luz, c). La longitud de onda es la <strong>más larga posible</strong> para la frecuencia dada, ya que no hay materia que interactúe con la onda. Este es el estado más "puro" de propagación de luz.`;
             } else if (n === 1.0003) {
-                explicacion = `<strong>🌬️ ${medioNombre}:</strong> El aire tiene un índice de refracción casi idéntico al vacío (n≈1.0003). La velocidad de la luz disminuye <strong>mínimamente</strong> (≈0.03%) y la longitud de onda prácticamente no cambia. Por eso, a simple vista, la luz parece viajar igual en el aire que en el vacío.`;
+                explicacion = `<strong>${medioNombre}:</strong> El aire tiene un índice de refracción casi idéntico al vacío (n≈1.0003). La velocidad de la luz disminuye <strong>mínimamente</strong> (≈0.03%) y la longitud de onda prácticamente no cambia. Por eso, a simple vista, la luz parece viajar igual en el aire que en el vacío.`;
             } else if (n === 1.33) {
-                explicacion = `<strong>💧 ${medioNombre}:</strong> El agua es un medio más denso. La velocidad de la luz se reduce a aproximadamente <strong>225,000 km/s</strong> (75% de c). La longitud de onda se <strong>comprime un 33%</strong> respecto al vacío. Esto explica fenómenos como la refracción: cuando la luz entra al agua, cambia de dirección debido a este cambio de velocidad.`;
+                explicacion = `<strong>${medioNombre}:</strong> El agua es un medio más denso. La velocidad de la luz se reduce a aproximadamente <strong>225,000 km/s</strong> (75% de c). La longitud de onda se <strong>comprime un 33%</strong> respecto al vacío. Esto explica fenómenos como la refracción: cuando la luz entra al agua, cambia de dirección debido a este cambio de velocidad.`;
             } else if (n === 1.52) {
-                explicacion = `<strong>🔍 ${medioNombre}:</strong> El vidrio es aún más denso que el agua. La velocidad de la luz cae a aproximadamente <strong>197,000 km/s</strong> (65% de c). La longitud de onda se <strong>comprime un 52%</strong>. Este alto índice de refracción es lo que permite a los lentes y prismas desviar y enfocar la luz de manera efectiva.`;
+                explicacion = `<strong>${medioNombre}:</strong> El vidrio es aún más denso que el agua. La velocidad de la luz cae a aproximadamente <strong>197,000 km/s</strong> (65% de c). La longitud de onda se <strong>comprime un 52%</strong>. Este alto índice de refracción es lo que permite a los lentes y prismas desviar y enfocar la luz de manera efectiva.`;
             }
             
             explicacion += `<br><br><em>💡 Nota: A mayor índice de refracción (n), más lenta viaja la luz y más comprimidas se ven las ondas. Sin embargo, la frecuencia (y por lo tanto el color) de la luz NO cambia.</em>`;
@@ -325,62 +552,77 @@
             amplitudValor.textContent = amplitudInput.value;
             
             time = 0;
-            drawProgress = 0; // Reinicia el progreso de dibujo
+            drawProgress = 0;
             
-            actualizarExplicacion(); // Actualiza la explicación
+            actualizarExplicacion();
 
             if (!isSimulating) {
                 drawWave(); 
             }
         }
 
-        // --- Lógica de Dibujo de la Onda (Función Principal) ---
+        // --- Lógica de Dibujo de la Onda ---
         function drawWave() {
             if (!ctx) return;
             
-            // 1. Obtener parámetros
             const A = parseFloat(amplitudInput.value);          
             const f = parseFloat(frecuenciaInput.value); 
             const n = parseFloat(medioSelect.value);            
             
-            // Parámetros de la Onda (CORREGIDO)
-            // k = (2π·f·n)/c  → Mayor n = mayor k = longitud de onda más corta
             const waveNumber_k = f * n * 0.05; 
-            // ω = 2π·f  → La frecuencia NO cambia con el medio
             const angularFrequency_omega = f * 0.05;
             
-            // Dimensiones del Canvas
             const W = canvas.width;
             const H = canvas.height;
             const centerY = H / 2;
             const scaleY = H / (2 * 2.5);
 
-            // 2. Limpiar el Canvas
-            ctx.fillStyle = '#111';
+            // Limpiar el Canvas con gradiente
+            const gradient = ctx.createLinearGradient(0, 0, 0, H);
+            gradient.addColorStop(0, '#000000');
+            gradient.addColorStop(0.5, '#0a0a1a');
+            gradient.addColorStop(1, '#000000');
+            ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, W, H);
 
-            // 3. Dibujar Ejes (Línea central)
-            ctx.beginPath();
-            ctx.strokeStyle = '#333';
+            // Dibujar grid sutil
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
             ctx.lineWidth = 1;
+            for (let i = 0; i < W; i += 50) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, H);
+                ctx.stroke();
+            }
+            for (let i = 0; i < H; i += 50) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(W, i);
+                ctx.stroke();
+            }
+
+            // Dibujar Eje central
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(100, 100, 150, 0.5)';
+            ctx.lineWidth = 2;
             ctx.moveTo(0, centerY);
             ctx.lineTo(W, centerY);
             ctx.stroke();
 
-            // 4. Dibujar la Onda (El campo E)
+            // Dibujar la Onda con efecto de brillo
+            const maxX = isSimulating ? W * drawProgress : W;
+            
+            // Sombra de la onda
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = var2css('var(--color-wave)');
+            
             ctx.beginPath();
             ctx.strokeStyle = var2css('var(--color-wave)');
             ctx.lineWidth = 3;
             
-            // Calcular hasta dónde dibujar según el progreso
-            const maxX = isSimulating ? W * drawProgress : W;
-            
             for (let x = 0; x < maxX; x++) {
                 const normalizedX = x * 0.1; 
-
-                // Ecuación de onda: Y = A * sin( k*x - ω*t )
                 const y = A * Math.sin((waveNumber_k * normalizedX) - (angularFrequency_omega * time));
-                
                 const pixelY = centerY - (y * scaleY);
                 
                 if (x === 0) {
@@ -391,21 +633,22 @@
             }
             ctx.stroke();
             
-            // Dibujar un punto brillante al final de la onda mientras se está dibujando
+            // Punto brillante al final
             if (isSimulating && drawProgress < 1) {
                 const lastX = maxX;
                 const normalizedLastX = lastX * 0.1;
                 const lastY = A * Math.sin((waveNumber_k * normalizedLastX) - (angularFrequency_omega * time));
                 const lastPixelY = centerY - (lastY * scaleY);
                 
+                ctx.shadowBlur = 20;
                 ctx.beginPath();
-                ctx.arc(lastX, lastPixelY, 5, 0, Math.PI * 2);
+                ctx.arc(lastX, lastPixelY, 6, 0, Math.PI * 2);
                 ctx.fillStyle = var2css('var(--color-wave)');
                 ctx.fill();
                 
-                // Efecto de brillo
+                ctx.shadowBlur = 30;
                 ctx.beginPath();
-                ctx.arc(lastX, lastPixelY, 8, 0, Math.PI * 2);
+                ctx.arc(lastX, lastPixelY, 10, 0, Math.PI * 2);
                 ctx.strokeStyle = var2css('var(--color-wave)');
                 ctx.lineWidth = 2;
                 ctx.globalAlpha = 0.5;
@@ -413,29 +656,33 @@
                 ctx.globalAlpha = 1;
             }
             
-            // Muestra la configuración actual
+            ctx.shadowBlur = 0;
+            
+            // Información en pantalla con mejor diseño
+            ctx.fillStyle = 'rgba(30, 41, 59, 0.8)';
+            ctx.fillRect(10, 10, 280, 50);
+            ctx.strokeStyle = var2css('var(--color-primary)');
+            ctx.lineWidth = 2;
+            ctx.strokeRect(10, 10, 280, 50);
+            
             ctx.fillStyle = 'white';
-            ctx.font = '12px Arial';
-            ctx.fillText(`Frec: ${f} Hz | Amplitud: ${A} | Medio (n): ${n}`, 10, 20);
+            ctx.font = 'bold 13px "Segoe UI"';
+            ctx.fillText(`⚡ Frecuencia: ${f} Hz`, 20, 30);
+            ctx.fillText(`📊 Amplitud: ${A} | 🌐 Medio (n): ${n}`, 20, 50);
         }
 
         // --- Bucle de Animación ---
         function animate() {
-            if (!isSimulating) {
-                return;
-            }
+            if (!isSimulating) return;
             
-            // Incrementar el progreso de dibujo gradualmente
             if (drawProgress < 1) {
-                drawProgress += 0.015; // Velocidad de dibujo (ajustable)
+                drawProgress += 0.015;
                 if (drawProgress > 1) drawProgress = 1;
             } else {
-                // Una vez completado el dibujo, animar la onda normalmente
                 time += 0.1;
             }
             
             drawWave();
-            
             animationFrameId = requestAnimationFrame(animate);
         }
 
@@ -443,23 +690,22 @@
         function toggleSimulation() {
             isSimulating = !isSimulating;
             if (isSimulating) {
-                drawProgress = 0; // Reinicia el progreso al iniciar
+                drawProgress = 0;
                 time = 0;
-                iniciarBoton.textContent = 'Detener Simulación';
-                iniciarBoton.style.backgroundColor = '#dc3545';
+                iniciarBoton.innerHTML = '⏸ Detener Simulación';
+                iniciarBoton.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
                 animate();
             } else {
-                iniciarBoton.textContent = 'Iniciar Simulación';
-                iniciarBoton.style.backgroundColor = var2css('var(--color-secondary)');
+                iniciarBoton.innerHTML = '▶ Iniciar Simulación';
+                iniciarBoton.style.background = 'linear-gradient(135deg, var(--color-secondary), var(--color-secondary-dark))';
                 cancelAnimationFrame(animationFrameId);
-                drawProgress = 1; // Muestra la onda completa al detener
+                drawProgress = 1;
                 drawWave(); 
             }
         }
 
         // --- Event Listeners y Inicialización ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Inicializar el contexto de dibujo
             if (canvas) {
                 ctx = canvas.getContext('2d');
             }
@@ -469,16 +715,14 @@
                 return; 
             }
             
-            // Asignar los listeners de eventos de simulación
             frecuenciaInput.addEventListener('input', updateValues);
             amplitudInput.addEventListener('input', updateValues);
             medioSelect.addEventListener('change', updateValues);
             iniciarBoton.addEventListener('click', toggleSimulation);
 
-            // Inicializar el tamaño del canvas y los valores iniciales
             resizeCanvas();
             updateValues();
-            actualizarExplicacion(); // Mostrar explicación inicial
+            actualizarExplicacion();
         });
 
         window.addEventListener('resize', resizeCanvas);
