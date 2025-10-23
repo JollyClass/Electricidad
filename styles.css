@@ -1,135 +1,34 @@
-/* Variables CSS para manejo de color */
-:root {
-    --color-primary: #007bff; /* Azul */
-    --color-secondary: #28a745; /* Verde */
-    --color-background: #f4f7f6; /* Gris claro */
-    --color-card-bg: #ffffff; /* Blanco */
-    --color-text: #343a40; /* Gris oscuro */
-    --color-wave: #ffc107; /* Amarillo para la onda */
-}
+/* --- Estilos para la Información Contextual --- */
 
-/* Estilos Globales */
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--color-background);
-    color: var(--color-text);
-    line-height: 1.6;
-}
-
-header {
-    background-color: var(--color-primary);
-    color: white;
-    padding: 20px 0;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-header h1 {
-    margin-bottom: 5px;
-}
-
-.container {
-    display: flex;
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 0 20px;
-    gap: 20px;
-}
-
-/* Estilos de Secciones y Controles */
-.controls, .visualization {
-    background-color: var(--color-card-bg);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.controls {
-    flex: 1; 
-    min-width: 280px;
-}
-
-.visualization {
-    flex: 3;
-}
-
-h2 {
-    color: var(--color-primary);
-    border-bottom: 2px solid var(--color-secondary);
-    padding-bottom: 5px;
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-
-/* Estilos para los Controles */
-.control-group {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.control-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input[type="range"], select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    box-sizing: border-box;
-}
-
-/* Estilos para el Botón */
-#iniciar-simulacion {
-    background-color: var(--color-secondary);
+/* Estilo para el botón de información */
+.info-btn {
+    background: var(--color-primary);
     color: white;
     border: none;
-    padding: 10px 15px;
-    margin-top: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-#iniciar-simulacion:hover {
-    background-color: #218838; 
-}
-
-/* Estilos para el Área de Visualización */
-#wave-display {
-    background-color: #111; 
-    border: 2px solid var(--color-wave);
-    border-radius: 4px;
-    overflow: hidden;
-    display: block;
-}
-
-/* Asegura que el canvas tenga el tamaño correcto */
-#wave-canvas {
-    display: block;
-    width: 100%;
-    height: 350px; 
-}
-
-/* Pie de Página */
-footer {
+    border-radius: 50%; /* Lo hace redondo */
+    width: 20px;
+    height: 20px;
+    line-height: 20px; /* Centra el texto */
     text-align: center;
-    padding: 15px 0;
-    margin-top: 20px;
-    border-top: 1px solid #ccc;
-    color: #6c757d;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 0;
+    vertical-align: middle;
+    transition: background-color 0.2s;
 }
 
-/* Media Query (Diseño responsivo) */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column; 
-    }
+.info-btn:hover {
+    background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+}
+
+/* Estilo para el texto de información */
+.info-text {
+    background-color: #e9f7ef; /* Fondo muy claro para destacar */
+    border-left: 3px solid var(--color-secondary);
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: var(--color-text);
 }
