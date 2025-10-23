@@ -172,3 +172,47 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('resize', resizeCanvas);
+// ... (código de funciones drawWave, animate, toggleSimulation, etc.) ...
+
+// --- Event Listeners y Inicialización ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Inicializar el contexto de dibujo
+    if (canvas) {
+        ctx = canvas.getContext('2d');
+    }
+
+    if (!canvas || !ctx) {
+        console.error("Error: No se pudo obtener el elemento canvas o su contexto.");
+        return; 
+    }
+    
+    // 1. Asignar los listeners de eventos de simulación (Input/Change/Click)
+    frecuenciaInput.addEventListener('input', updateValues);
+    amplitudInput.addEventListener('input', updateValues);
+    medioSelect.addEventListener('change', updateValues);
+    iniciarBoton.addEventListener('click', toggleSimulation);
+
+    // 2. MANEJO DE LA INFORMACIÓN CONTEXTUAL (Lógica clave)
+    const infoButtons = document.querySelectorAll('.info-btn');
+    
+    infoButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            
+            // Obtiene el identificador: 'frecuencia' o 'amplitud'
+            const targetId = `info-${button.dataset.info}`;
+            const infoElement = document.getElementById(targetId);
+            
+            if (infoElement) {
+                // Alternar la visibilidad (si está 'none', se pone en 'block', y viceversa)
+                infoElement.style.display = (infoElement.style.display === 'none') ? 'block' : 'none';
+            }
+        });
+    });
+
+    // 3. Inicializar el tamaño del canvas y los valores iniciales
+    resizeCanvas();
+    updateValues(); 
+});
+
+window.addEventListener('resize', resizeCanvas);
