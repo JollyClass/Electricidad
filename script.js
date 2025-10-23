@@ -12,8 +12,6 @@ const ctx = canvas.getContext('2d');
 let animationFrameId;
 let isSimulating = false;
 let time = 0;
-// Factor de escala para que la velocidad de fase (V = c/n) sea visible
-const c_scale = 10; 
 
 // Función auxiliar para obtener el valor de una variable CSS
 function var2css(cssVar) {
@@ -51,35 +49,34 @@ function updateValues() {
 // --- Lógica de Dibujo de la Onda (Función Principal) ---
 function drawWave() {
     // 1. Obtener parámetros
-    // La amplitud no se escala
     const A = parseFloat(amplitudInput.value);          
     
-    // La frecuencia se escala para el cálculo
-    const f = parseFloat(frecuenciaInput.value) * 0.1; 
+    // La frecuencia se usa directamente sin escalado * 0.1
+    const f = parseFloat(frecuenciaInput.value); 
     
-    // Índice de refracción (n): 1.0 para vacío, 1.52 para vidrio, etc.
+    // Índice de refracción
     const n = parseFloat(medioSelect.value);            
     
     // Parámetros de la Onda
-    // k (Número de onda) controla cuántas crestas caben en la pantalla.
-    // k = 2 * pi / lambda. Como lambda = c / (n * f), entonces k es proporcional a n*f.
-    const waveNumber_k = f * n * 0.5; 
+    // waveNumber_k (k) controla cuántas crestas hay. Es proporcional a Frecuencia y Medio (n).
+    // Factor de 0.05 para que quepan varias ondas en el ancho del canvas
+    const waveNumber_k = f * n * 0.05; 
     
-    // Omega (Frecuencia angular) controla la velocidad de la fase.
-    // ω = 2 * pi * f
-    const angularFrequency_omega = 2 * Math.PI * f / n; // V_fase = ω/k = c/n (Simulado)
+    // angularFrequency_omega (ω) controla la velocidad de la fase. Es inversamente proporcional a n.
+    // Usamos f*0.01 como factor de movimiento base.
+    const angularFrequency_omega = f * 0.05 / n; 
 
     // Dimensiones del Canvas
     const W = canvas.width;
     const H = canvas.height;
     const centerY = H / 2;
-    const scaleY = H / (2 * 2.5); 
+    const scaleY = H / (2 * 2.5); // Escalado para la amplitud
 
     // 2. Limpiar el Canvas
     ctx.fillStyle = '#111';
     ctx.fillRect(0, 0, W, H);
 
-    // 3. Dibujar Ejes
+    // 3. Dibujar Ejes (Línea central)
     ctx.beginPath();
     ctx.strokeStyle = '#333';
     ctx.lineWidth = 1;
@@ -87,7 +84,7 @@ function drawWave() {
     ctx.lineTo(W, centerY);
     ctx.stroke();
 
-    // 4. Dibujar la Onda
+    // 4. Dibujar la Onda (El campo E)
     ctx.beginPath();
     ctx.strokeStyle = var2css('var(--color-wave)');
     ctx.lineWidth = 3;
@@ -95,10 +92,9 @@ function drawWave() {
     // Loop para dibujar la curva punto por punto
     for (let x = 0; x < W; x++) {
         // Mapeo de la coordenada de píxel a una coordenada física simulada.
-        const normalizedX = x * 0.05; // Escala la posición x
-        
+        const normalizedX = x * 0.1; // Escala la posición x
+
         // Ecuación de onda: Y = A * sin( k*x - ω*t )
-        // La velocidad de propagación es V = ω/k = (2*pi*f/n) / (f*n*const)
         const y = A * Math.sin((waveNumber_k * normalizedX) - (angularFrequency_omega * time));
         
         // Mapear al espacio de píxeles
@@ -112,10 +108,10 @@ function drawWave() {
     }
     ctx.stroke();
     
-    // Opcional: Mostrar información del medio en el canvas (solo para depuración)
+    // Muestra la configuración actual para referencia
     ctx.fillStyle = 'white';
     ctx.font = '12px Arial';
-    ctx.fillText(`Medio: n=${n} | Frec: ${f.toFixed(1)*10} Hz`, 10, 20);
+    ctx.fillText(`Frec: ${f} Hz | Amplitud: ${A} | Medio (n): ${n}`, 10, 20);
 }
 
 // --- Bucle de Animación ---
@@ -124,8 +120,7 @@ function animate() {
         return;
     }
     
-    // Ajuste de la velocidad de tiempo
-    time += 0.05; 
+    time += 0.1; // Incremento del tiempo acelerado
     drawWave();
     
     animationFrameId = requestAnimationFrame(animate);
