@@ -13,7 +13,7 @@
             --color-background: #f4f7f6; /* Gris claro */
             --color-card-bg: #ffffff; /* Blanco */
             --color-text: #343a40; /* Gris oscuro */
-            --color-wave: #ffc107; /* Amarillo para la onda (simulado) */
+            --color-wave: #ffc107; /* Amarillo para la onda */
         }
 
         /* Estilos Globales */
@@ -46,7 +46,7 @@
             gap: 20px;
         }
 
-        /* Estilos para las Secciones (Controles y Visualización) */
+        /* Estilos para las Secciones */
         .controls, .visualization {
             background-color: var(--color-card-bg);
             padding: 20px;
@@ -55,12 +55,12 @@
         }
 
         .controls {
-            flex: 1; /* Ocupa 1 parte del espacio */
+            flex: 1; 
             min-width: 280px;
         }
 
         .visualization {
-            flex: 3; /* Ocupa 3 partes del espacio, es el área más grande */
+            flex: 3;
         }
 
         h2 {
@@ -107,30 +107,26 @@
         }
 
         #iniciar-simulacion:hover {
-            background-color: #218838; /* Tono más oscuro de verde */
+            background-color: #218838; 
         }
 
         /* Estilos para el Área de Visualización */
         #wave-display {
-            min-height: 300px; /* Altura mínima para el área de gráfico */
+            /* Eliminamos el min-height y centrado, dejamos que el canvas lo controle */
             background-color: #111; /* Fondo oscuro para el área de onda */
             border: 2px solid var(--color-wave);
             border-radius: 4px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: #ccc;
-            flex-direction: column;
+            overflow: hidden; /* Asegura que el canvas se ajuste */
+            display: block;
         }
 
-        .placeholder {
-            margin-top: 10px;
-            padding: 5px;
-            font-style: italic;
-            color: var(--color-wave);
+        /* Aseguramos que el canvas llene su contenedor */
+        #wave-canvas {
+            display: block;
+            width: 100%;
+            height: 350px; /* Altura fija para el canvas */
         }
-
+        
         /* Estilos para el Pie de Página */
         footer {
             text-align: center;
@@ -143,7 +139,7 @@
         /* Media Query para pantallas pequeñas (móviles) */
         @media (max-width: 768px) {
             .container {
-                flex-direction: column; /* Apila las secciones verticalmente */
+                flex-direction: column; 
             }
         }
     </style>
@@ -160,7 +156,7 @@
             
             <div class="control-group">
                 <label for="frecuencia">Frecuencia (Hz):</label>
-                <input type="range" id="frecuencia" name="frecuencia" min="1" max="100" value="50">
+                <input type="range" id="frecuencia" name="frecuencia" min="10" max="100" value="50">
                 <span id="frecuencia-valor">50</span>
             </div>
 
@@ -174,28 +170,176 @@
             <div class="control-group">
                 <label for="medio">Seleccionar Medio:</label>
                 <select id="medio" name="medio">
-                    <option value="vacio">Vacío</option>
-                    <option value="aire">Aire</option>
-                    <option value="agua">Agua</option>
-                    <option value="vidrio">Vidrio</option>
+                    <option value="1.00">Vacío (n≈1.00)</option>
+                    <option value="1.0003">Aire (n≈1.0003)</option>
+                    <option value="1.33">Agua (n≈1.33)</option>
+                    <option value="1.52">Vidrio (n≈1.52)</option>
                 </select>
             </div>
             
-            <button id="iniciar-simulacion">Iniciar/Detener Simulación</button>
+            <button id="iniciar-simulacion">Iniciar Simulación</button>
         </section>
 
         <section class="visualization">
             <h2>✨ Visualización de Onda</h2>
             <div id="wave-display">
-                <p>El gráfico dinámico de la onda se mostraría aquí.</p>
-                <div class="placeholder"></div>
+                <canvas id="wave-canvas"></canvas>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>© 2025 Simulador EM - HTML & CSS Básico</p>
+        <p>© 2025 Simulador EM - HTML, CSS & JS</p>
     </footer>
     
-    </body>
+    <script>
+        // --- Referencias a Elementos HTML ---
+        const frecuenciaInput = document.getElementById('frecuencia');
+        const amplitudInput = document.getElementById('amplitud');
+        const medioSelect = document.getElementById('medio');
+        const frecuenciaValor = document.getElementById('frecuencia-valor');
+        const amplitudValor = document.getElementById('amplitud-valor');
+        const iniciarBoton = document.getElementById('iniciar-simulacion');
+        const canvas = document.getElementById('wave-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // --- Variables de Simulación ---
+        let animationFrameId;
+        let isSimulating = false;
+        let time = 0;
+        const speedOfLight = 300; // Velocidad de la luz simulada (para escala)
+
+        // Ajustar el tamaño del canvas al cargar (importante para el dibujo)
+        function resizeCanvas() {
+            // Usamos el 'clientWidth' del contenedor para el ancho
+            canvas.width = canvas.clientWidth; 
+            canvas.height = 350; // Mantenemos la altura fija del CSS
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // --- Funciones de Actualización de Controles ---
+        function updateFrecuencia() {
+            frecuenciaValor.textContent = frecuenciaInput.value;
+        }
+
+        function updateAmplitud() {
+            amplitudValor.textContent = amplitudInput.value;
+        }
+        
+        // Asignar los listeners de eventos para actualizar los valores en tiempo real
+        frecuenciaInput.addEventListener('input', updateFrecuencia);
+        amplitudInput.addEventListener('input', updateAmplitud);
+
+        // Inicializar los valores mostrados
+        updateFrecuencia();
+        updateAmplitud();
+
+        // --- Lógica de Dibujo de la Onda (Función Principal) ---
+        function drawWave() {
+            // 1. Obtener parámetros
+            const f = parseFloat(frecuenciaInput.value) * 0.1; // Frecuencia
+            const A = parseFloat(amplitudInput.value);          // Amplitud
+            const n = parseFloat(medioSelect.value);            // Índice de refracción
+            
+            // La velocidad de fase es V = C / n. 
+            // La longitud de onda es λ = V / f = (C / n) / f
+            const lambda = speedOfLight / (n * f); 
+
+            // Dimensiones del Canvas
+            const W = canvas.width;
+            const H = canvas.height;
+            const centerY = H / 2;
+            const scaleY = H / (2 * 2.5); // Escalado para que la amplitud máxima quepa
+
+            // 2. Limpiar el Canvas
+            ctx.fillStyle = '#111';
+            ctx.fillRect(0, 0, W, H);
+
+            // 3. Dibujar Ejes (Línea central)
+            ctx.beginPath();
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(W, centerY);
+            ctx.stroke();
+
+            // 4. Dibujar la Onda (Simulación E-field)
+            ctx.beginPath();
+            ctx.strokeStyle = var2css('var(--color-wave)'); // Color de la onda
+            ctx.lineWidth = 3;
+            
+            // Loop para dibujar la curva
+            for (let x = 0; x < W; x++) {
+                // Posición normalizada (simulando distancia)
+                const normalizedX = (x / W) * (15 * lambda); // 15 longitudes de onda simuladas
+
+                // Ecuación de onda: Y = A * sin( (2π/λ) * x - ω * t )
+                // ω (velocidad angular) = 2π * f
+                const angularFrequency = 2 * Math.PI * f;
+                const waveNumber = (2 * Math.PI) / lambda;
+
+                // Calcular la posición Y (desplazamiento)
+                const y = A * Math.sin(waveNumber * normalizedX - angularFrequency * time);
+                
+                // Mapear al espacio de píxeles
+                const pixelY = centerY - (y * scaleY);
+                
+                if (x === 0) {
+                    ctx.moveTo(x, pixelY);
+                } else {
+                    ctx.lineTo(x, pixelY);
+                }
+            }
+            ctx.stroke();
+            
+            // Función auxiliar para obtener el valor de una variable CSS
+            function var2css(cssVar) {
+                return getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
+            }
+        }
+
+        // --- Bucle de Animación ---
+        function animate() {
+            if (!isSimulating) {
+                // Detener el bucle si no estamos simulando
+                return;
+            }
+            
+            // Incrementar el tiempo para el movimiento de la onda
+            time += 0.05; 
+
+            // Limitar el tiempo para evitar problemas de precisión a largo plazo (opcional)
+            if (time > 1000) time = 0; 
+            
+            drawWave();
+            
+            // Solicitar el siguiente frame
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        // --- Control de Inicio/Detención ---
+        function toggleSimulation() {
+            isSimulating = !isSimulating;
+            if (isSimulating) {
+                iniciarBoton.textContent = 'Detener Simulación';
+                iniciarBoton.style.backgroundColor = '#dc3545'; // Rojo
+                animate();
+            } else {
+                iniciarBoton.textContent = 'Iniciar Simulación';
+                iniciarBoton.style.backgroundColor = var2css('var(--color-secondary)'); // Verde
+                cancelAnimationFrame(animationFrameId);
+            }
+        }
+
+        // --- Event Listeners ---
+        iniciarBoton.addEventListener('click', toggleSimulation);
+        frecuenciaInput.addEventListener('input', () => { if(isSimulating) drawWave(); });
+        amplitudInput.addEventListener('input', () => { if(isSimulating) drawWave(); });
+        medioSelect.addEventListener('change', () => { if(isSimulating) drawWave(); });
+
+        // Dibuja la onda estática inicial antes de iniciar
+        drawWave(); 
+    </script>
+</body>
 </html>
