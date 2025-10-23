@@ -39,7 +39,6 @@ function updateValues() {
     frecuenciaValor.textContent = frecuenciaInput.value;
     amplitudValor.textContent = amplitudInput.value;
     
-    // Reiniciamos el tiempo para que el movimiento de la onda sea coherente al cambiar parámetros
     time = 0; 
 
     if (!isSimulating) {
@@ -57,8 +56,8 @@ function drawWave() {
     const n = parseFloat(medioSelect.value);            
     
     // Parámetros de la Onda
-    const waveNumber_k = f * n * 0.05; // Controla la Longitud de Onda
-    const angularFrequency_omega = f * 0.05 / n; // Controla la Velocidad de Propagación
+    const waveNumber_k = f * n * 0.05; 
+    const angularFrequency_omega = f * 0.05 / n; 
     
     // Dimensiones del Canvas
     const W = canvas.width;
@@ -150,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     medioSelect.addEventListener('change', updateValues);
     iniciarBoton.addEventListener('click', toggleSimulation);
 
-    // 2. MANEJO DE LA INFORMACIÓN CONTEXTUAL (Activa los botones ?)
+    // 2. MANEJO DE LA INFORMACIÓN CONTEXTUAL (Activación de los botones ?)
     const infoButtons = document.querySelectorAll('.info-btn');
     
     infoButtons.forEach(button => {
