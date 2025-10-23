@@ -1,4 +1,4 @@
-// --- Referencias a Elementos HTML (Se declaran fuera del DOMContentLoaded para accesibilidad global) ---
+// --- Referencias a Elementos HTML ---
 const frecuenciaInput = document.getElementById('frecuencia');
 const amplitudInput = document.getElementById('amplitud');
 const medioSelect = document.getElementById('medio');
@@ -12,15 +12,14 @@ const ctx = canvas.getContext('2d');
 let animationFrameId;
 let isSimulating = false;
 let time = 0;
-const speedOfLight = 300; // Velocidad de la luz simulada (para escala)
+// Factor de escala para que la velocidad de fase (V = c/n) sea visible
+const c_scale = 10; 
 
 // Función auxiliar para obtener el valor de una variable CSS
 function var2css(cssVar) {
-    // Es posible que necesitemos una forma más robusta si esta falla en algunos navegadores
     try {
         return getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
     } catch (e) {
-        // Fallback a un color directo si la variable CSS falla
         if (cssVar === 'var(--color-wave)') return '#ffc107'; 
         if (cssVar === 'var(--color-secondary)') return '#28a745';
         return '#ccc';
@@ -29,11 +28,8 @@ function var2css(cssVar) {
 
 // --- Ajuste del Canvas (CRUCIAL) ---
 function resizeCanvas() {
-    // Establecer los atributos width/height del canvas a sus dimensiones reales en píxeles.
     canvas.width = canvas.offsetWidth; 
     canvas.height = canvas.offsetHeight;
-    
-    // Redibujar inmediatamente si no hay animación
     if (!isSimulating) {
         drawWave();
     }
@@ -44,7 +40,9 @@ function updateValues() {
     frecuenciaValor.textContent = frecuenciaInput.value;
     amplitudValor.textContent = amplitudInput.value;
     
-    // Si la simulación está detenida, actualiza el dibujo para reflejar los cambios
+    // Al cambiar la configuración, reiniciamos el tiempo para que el movimiento sea coherente
+    time = 0; 
+
     if (!isSimulating) {
          drawWave(); 
     }
@@ -53,11 +51,23 @@ function updateValues() {
 // --- Lógica de Dibujo de la Onda (Función Principal) ---
 function drawWave() {
     // 1. Obtener parámetros
-    const f = parseFloat(frecuenciaInput.value) * 0.1; 
+    // La amplitud no se escala
     const A = parseFloat(amplitudInput.value);          
+    
+    // La frecuencia se escala para el cálculo
+    const f = parseFloat(frecuenciaInput.value) * 0.1; 
+    
+    // Índice de refracción (n): 1.0 para vacío, 1.52 para vidrio, etc.
     const n = parseFloat(medioSelect.value);            
     
-    const lambda = speedOfLight / (n * f); 
+    // Parámetros de la Onda
+    // k (Número de onda) controla cuántas crestas caben en la pantalla.
+    // k = 2 * pi / lambda. Como lambda = c / (n * f), entonces k es proporcional a n*f.
+    const waveNumber_k = f * n * 0.5; 
+    
+    // Omega (Frecuencia angular) controla la velocidad de la fase.
+    // ω = 2 * pi * f
+    const angularFrequency_omega = 2 * Math.PI * f / n; // V_fase = ω/k = c/n (Simulado)
 
     // Dimensiones del Canvas
     const W = canvas.width;
@@ -82,15 +92,14 @@ function drawWave() {
     ctx.strokeStyle = var2css('var(--color-wave)');
     ctx.lineWidth = 3;
     
-    const angularFrequency = 2 * Math.PI * f;
-    const waveNumber = (2 * Math.PI) / lambda;
-
     // Loop para dibujar la curva punto por punto
     for (let x = 0; x < W; x++) {
-        const normalizedX = (x / W) * (15 * lambda); 
-
+        // Mapeo de la coordenada de píxel a una coordenada física simulada.
+        const normalizedX = x * 0.05; // Escala la posición x
+        
         // Ecuación de onda: Y = A * sin( k*x - ω*t )
-        const y = A * Math.sin(waveNumber * normalizedX - angularFrequency * time);
+        // La velocidad de propagación es V = ω/k = (2*pi*f/n) / (f*n*const)
+        const y = A * Math.sin((waveNumber_k * normalizedX) - (angularFrequency_omega * time));
         
         // Mapear al espacio de píxeles
         const pixelY = centerY - (y * scaleY);
@@ -102,6 +111,11 @@ function drawWave() {
         }
     }
     ctx.stroke();
+    
+    // Opcional: Mostrar información del medio en el canvas (solo para depuración)
+    ctx.fillStyle = 'white';
+    ctx.font = '12px Arial';
+    ctx.fillText(`Medio: n=${n} | Frec: ${f.toFixed(1)*10} Hz`, 10, 20);
 }
 
 // --- Bucle de Animación ---
@@ -110,7 +124,8 @@ function animate() {
         return;
     }
     
-    time += 0.05; // Incremento del tiempo para simular la propagación
+    // Ajuste de la velocidad de tiempo
+    time += 0.05; 
     drawWave();
     
     animationFrameId = requestAnimationFrame(animate);
@@ -120,25 +135,22 @@ function animate() {
 function toggleSimulation() {
     isSimulating = !isSimulating;
     if (isSimulating) {
-        // Iniciar
         iniciarBoton.textContent = 'Detener Simulación';
-        iniciarBoton.style.backgroundColor = '#dc3545'; // Rojo
+        iniciarBoton.style.backgroundColor = '#dc3545';
         animate();
     } else {
-        // Detener
         iniciarBoton.textContent = 'Iniciar Simulación';
-        iniciarBoton.style.backgroundColor = var2css('var(--color-secondary)'); // Verde
+        iniciarBoton.style.backgroundColor = var2css('var(--color-secondary)');
         cancelAnimationFrame(animationFrameId);
-        drawWave(); // Asegurar que el dibujo estático final es correcto
+        drawWave(); 
     }
 }
 
-// --- Event Listeners y Inicialización (Se ejecuta cuando el DOM está completamente cargado) ---
+// --- Event Listeners y Inicialización ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Asegurar que el canvas y el contexto existen
     if (!canvas || !ctx) {
         console.error("Error: No se pudo obtener el elemento canvas o su contexto.");
-        return; // Salir si el canvas no se encuentra
+        return; 
     }
     
     // 1. Asignar los listeners de eventos para interactividad
@@ -149,8 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Inicializar el tamaño del canvas y los valores
     resizeCanvas();
-    updateValues(); // Esto dibujará la onda estática inicial
+    updateValues(); 
 });
 
-// Listener para redimensionamiento de la ventana
 window.addEventListener('resize', resizeCanvas);
