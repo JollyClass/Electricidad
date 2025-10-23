@@ -6,7 +6,6 @@ const frecuenciaValor = document.getElementById('frecuencia-valor');
 const amplitudValor = document.getElementById('amplitud-valor');
 const iniciarBoton = document.getElementById('iniciar-simulacion');
 const canvas = document.getElementById('wave-canvas');
-// Nota: ctx se inicializa dentro del DOMContentLoaded para evitar errores de carga
 
 // --- Variables de Simulación ---
 let ctx;
@@ -40,7 +39,6 @@ function updateValues() {
     frecuenciaValor.textContent = frecuenciaInput.value;
     amplitudValor.textContent = amplitudInput.value;
     
-    // Reiniciamos el tiempo para que el movimiento de la onda sea coherente al cambiar parámetros
     time = 0; 
 
     if (!isSimulating) {
@@ -50,22 +48,22 @@ function updateValues() {
 
 // --- Lógica de Dibujo de la Onda (Función Principal) ---
 function drawWave() {
-    if (!ctx) return; // Asegurar que el contexto de dibujo existe
+    if (!ctx) return;
     
     // 1. Obtener parámetros
     const A = parseFloat(amplitudInput.value);          
     const f = parseFloat(frecuenciaInput.value); 
     const n = parseFloat(medioSelect.value);            
     
-    // Parámetros de la Onda (Ajustes de escala para una buena visualización)
-    const waveNumber_k = f * n * 0.05; // Controla la Longitud de Onda (compresión)
-    const angularFrequency_omega = f * 0.05 / n; // Controla la Velocidad de Propagación
+    // Parámetros de la Onda
+    const waveNumber_k = f * n * 0.05; 
+    const angularFrequency_omega = f * 0.05 / n; 
     
     // Dimensiones del Canvas
     const W = canvas.width;
     const H = canvas.height;
     const centerY = H / 2;
-    const scaleY = H / (2 * 2.5); // Escalado de amplitud
+    const scaleY = H / (2 * 2.5);
 
     // 2. Limpiar el Canvas
     ctx.fillStyle = '#111';
@@ -85,7 +83,7 @@ function drawWave() {
     ctx.lineWidth = 3;
     
     for (let x = 0; x < W; x++) {
-        const normalizedX = x * 0.1; // Escala la posición x
+        const normalizedX = x * 0.1; 
 
         // Ecuación de onda: Y = A * sin( k*x - ω*t )
         const y = A * Math.sin((waveNumber_k * normalizedX) - (angularFrequency_omega * time));
@@ -100,7 +98,7 @@ function drawWave() {
     }
     ctx.stroke();
     
-    // Muestra la configuración actual para referencia
+    // Muestra la configuración actual
     ctx.fillStyle = 'white';
     ctx.font = '12px Arial';
     ctx.fillText(`Frec: ${f} Hz | Amplitud: ${A} | Medio (n): ${n}`, 10, 20);
@@ -112,7 +110,7 @@ function animate() {
         return;
     }
     
-    time += 0.1; // Incremento del tiempo para simular movimiento
+    time += 0.1; 
     drawWave();
     
     animationFrameId = requestAnimationFrame(animate);
@@ -123,11 +121,11 @@ function toggleSimulation() {
     isSimulating = !isSimulating;
     if (isSimulating) {
         iniciarBoton.textContent = 'Detener Simulación';
-        iniciarBoton.style.backgroundColor = '#dc3545'; // Rojo
+        iniciarBoton.style.backgroundColor = '#dc3545';
         animate();
     } else {
         iniciarBoton.textContent = 'Iniciar Simulación';
-        iniciarBoton.style.backgroundColor = var2css('var(--color-secondary)'); // Verde
+        iniciarBoton.style.backgroundColor = var2css('var(--color-secondary)');
         cancelAnimationFrame(animationFrameId);
         drawWave(); 
     }
