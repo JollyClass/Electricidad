@@ -242,6 +242,13 @@
             <div id="wave-display">
                 <canvas id="wave-canvas"></canvas>
             </div>
+            
+            <div id="explicacion-medio" style="margin-top: 20px; padding: 15px; background-color: #e3f2fd; border-left: 4px solid var(--color-primary); border-radius: 4px;">
+                <h3 style="margin-top: 0; color: var(--color-primary);">📖 Comportamiento de la Onda</h3>
+                <p id="texto-explicacion" style="margin: 0; line-height: 1.8;">
+                    Selecciona un medio para ver cómo afecta la propagación de la onda electromagnética.
+                </p>
+            </div>
         </section>
     </main>
 
@@ -258,6 +265,7 @@
         const amplitudValor = document.getElementById('amplitud-valor');
         const iniciarBoton = document.getElementById('iniciar-simulacion');
         const canvas = document.getElementById('wave-canvas');
+        const textoExplicacion = document.getElementById('texto-explicacion');
         
         // --- El código de los botones de ayuda NO está aquí. Es manejado por CSS. ---
 
@@ -266,6 +274,7 @@
         let animationFrameId;
         let isSimulating = false;
         let time = 0;
+        let drawProgress = 0; // Progreso del dibujo (0 a 1)
 
         // Función auxiliar para obtener el valor de una variable CSS
         function var2css(cssVar) {
@@ -288,12 +297,37 @@
             }
         }
 
+        // --- Explicaciones según el medio ---
+        function actualizarExplicacion() {
+            const n = parseFloat(medioSelect.value);
+            const medioNombre = medioSelect.options[medioSelect.selectedIndex].text;
+            
+            let explicacion = '';
+            
+            if (n === 1.00) {
+                explicacion = `<strong>🌌 ${medioNombre}:</strong> En el vacío, las ondas electromagnéticas viajan a su velocidad máxima: <strong>300,000 km/s</strong> (velocidad de la luz, c). La longitud de onda es la <strong>más larga posible</strong> para la frecuencia dada, ya que no hay materia que interactúe con la onda. Este es el estado más "puro" de propagación de luz.`;
+            } else if (n === 1.0003) {
+                explicacion = `<strong>🌬️ ${medioNombre}:</strong> El aire tiene un índice de refracción casi idéntico al vacío (n≈1.0003). La velocidad de la luz disminuye <strong>mínimamente</strong> (≈0.03%) y la longitud de onda prácticamente no cambia. Por eso, a simple vista, la luz parece viajar igual en el aire que en el vacío.`;
+            } else if (n === 1.33) {
+                explicacion = `<strong>💧 ${medioNombre}:</strong> El agua es un medio más denso. La velocidad de la luz se reduce a aproximadamente <strong>225,000 km/s</strong> (75% de c). La longitud de onda se <strong>comprime un 33%</strong> respecto al vacío. Esto explica fenómenos como la refracción: cuando la luz entra al agua, cambia de dirección debido a este cambio de velocidad.`;
+            } else if (n === 1.52) {
+                explicacion = `<strong>🔍 ${medioNombre}:</strong> El vidrio es aún más denso que el agua. La velocidad de la luz cae a aproximadamente <strong>197,000 km/s</strong> (65% de c). La longitud de onda se <strong>comprime un 52%</strong>. Este alto índice de refracción es lo que permite a los lentes y prismas desviar y enfocar la luz de manera efectiva.`;
+            }
+            
+            explicacion += `<br><br><em>💡 Nota: A mayor índice de refracción (n), más lenta viaja la luz y más comprimidas se ven las ondas. Sin embargo, la frecuencia (y por lo tanto el color) de la luz NO cambia.</em>`;
+            
+            textoExplicacion.innerHTML = explicacion;
+        }
+
         // --- Funciones de Actualización de Controles ---
         function updateValues() {
             frecuenciaValor.textContent = frecuenciaInput.value;
             amplitudValor.textContent = amplitudInput.value;
             
-            time = 0; 
+            time = 0;
+            drawProgress = 0; // Reinicia el progreso de dibujo
+            
+            actualizarExplicacion(); // Actualiza la explicación
 
             if (!isSimulating) {
                 drawWave(); 
@@ -338,7 +372,10 @@
             ctx.strokeStyle = var2css('var(--color-wave)');
             ctx.lineWidth = 3;
             
-            for (let x = 0; x < W; x++) {
+            // Calcular hasta dónde dibujar según el progreso
+            const maxX = isSimulating ? W * drawProgress : W;
+            
+            for (let x = 0; x < maxX; x++) {
                 const normalizedX = x * 0.1; 
 
                 // Ecuación de onda: Y = A * sin( k*x - ω*t )
@@ -354,6 +391,28 @@
             }
             ctx.stroke();
             
+            // Dibujar un punto brillante al final de la onda mientras se está dibujando
+            if (isSimulating && drawProgress < 1) {
+                const lastX = maxX;
+                const normalizedLastX = lastX * 0.1;
+                const lastY = A * Math.sin((waveNumber_k * normalizedLastX) - (angularFrequency_omega * time));
+                const lastPixelY = centerY - (lastY * scaleY);
+                
+                ctx.beginPath();
+                ctx.arc(lastX, lastPixelY, 5, 0, Math.PI * 2);
+                ctx.fillStyle = var2css('var(--color-wave)');
+                ctx.fill();
+                
+                // Efecto de brillo
+                ctx.beginPath();
+                ctx.arc(lastX, lastPixelY, 8, 0, Math.PI * 2);
+                ctx.strokeStyle = var2css('var(--color-wave)');
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = 0.5;
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+            }
+            
             // Muestra la configuración actual
             ctx.fillStyle = 'white';
             ctx.font = '12px Arial';
@@ -366,7 +425,15 @@
                 return;
             }
             
-            time += 0.1; 
+            // Incrementar el progreso de dibujo gradualmente
+            if (drawProgress < 1) {
+                drawProgress += 0.015; // Velocidad de dibujo (ajustable)
+                if (drawProgress > 1) drawProgress = 1;
+            } else {
+                // Una vez completado el dibujo, animar la onda normalmente
+                time += 0.1;
+            }
+            
             drawWave();
             
             animationFrameId = requestAnimationFrame(animate);
@@ -376,6 +443,8 @@
         function toggleSimulation() {
             isSimulating = !isSimulating;
             if (isSimulating) {
+                drawProgress = 0; // Reinicia el progreso al iniciar
+                time = 0;
                 iniciarBoton.textContent = 'Detener Simulación';
                 iniciarBoton.style.backgroundColor = '#dc3545';
                 animate();
@@ -383,6 +452,7 @@
                 iniciarBoton.textContent = 'Iniciar Simulación';
                 iniciarBoton.style.backgroundColor = var2css('var(--color-secondary)');
                 cancelAnimationFrame(animationFrameId);
+                drawProgress = 1; // Muestra la onda completa al detener
                 drawWave(); 
             }
         }
@@ -407,7 +477,8 @@
 
             // Inicializar el tamaño del canvas y los valores iniciales
             resizeCanvas();
-            updateValues(); 
+            updateValues();
+            actualizarExplicacion(); // Mostrar explicación inicial
         });
 
         window.addEventListener('resize', resizeCanvas);
