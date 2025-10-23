@@ -1,30 +1,73 @@
-<section class="controls">
-    <h2>⚙️ Controles de Onda</h2>
-    
-    <div class="control-group">
-        <label for="frecuencia">
-            Frecuencia (Hz):
-            <button class="info-btn" data-info="frecuencia">?</button> 
-        </label>
-        <input type="range" id="frecuencia" name="frecuencia" min="10" max="100" value="50">
-        <span id="frecuencia-valor">50</span>
-        <p class="info-text" id="info-frecuencia" style="display: none;">
-            La **Frecuencia (f)** determina el número de oscilaciones que pasan por un punto en un segundo. 
-            A mayor frecuencia, la **Longitud de Onda ($\lambda$) disminuye**, y la onda se ve más comprimida.
-        </p>
-    </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Ondas Electromagnéticas</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <header>
+        <h1>Simulador de Ondas Electromagnéticas 🌌</h1>
+        <p>Ajusta los parámetros y observa la propagación en diferentes medios.</p>
+    </header>
 
-    <div class="control-group">
-        <label for="amplitud">
-            Amplitud (Unidades):
-            <button class="info-btn" data-info="amplitud">?</button> 
-        </label>
-        <input type="range" id="amplitud" name="amplitud" min="0.1" max="2" step="0.1" value="1.0">
-        <span id="amplitud-valor">1.0</span>
-        <p class="info-text" id="info-amplitud" style="display: none;">
-            La **Amplitud (A)** es la altura máxima de la onda respecto al punto de equilibrio. 
-            Determina la **intensidad** o **energía** de la onda electromagnética (cuánto "brilla" o cuán fuerte es la señal).
-        </p>
-    </div>
+    <main class="container">
+        <section class="controls">
+            <h2>⚙️ Controles de Onda</h2>
+            
+            <div class="control-group">
+                <label for="frecuencia">
+                    Frecuencia (Hz):
+                    <button class="info-btn" data-info="frecuencia">?</button> 
+                </label>
+                <input type="range" id="frecuencia" name="frecuencia" min="10" max="100" value="50">
+                <span id="frecuencia-valor">50</span>
+                <p class="info-text" id="info-frecuencia" style="display: none;">
+                    La **Frecuencia (f)** determina el número de oscilaciones que pasan por un punto en un segundo. 
+                    A mayor frecuencia, la **Longitud de Onda ($\lambda$) disminuye**, y la onda se ve más comprimida.
+                </p>
+            </div>
+
+            <div class="control-group">
+                <label for="amplitud">
+                    Amplitud (Unidades):
+                    <button class="info-btn" data-info="amplitud">?</button> 
+                </label>
+                <input type="range" id="amplitud" name="amplitud" min="0.1" max="2" step="0.1" value="1.0">
+                <span id="amplitud-valor">1.0</span>
+                <p class="info-text" id="info-amplitud" style="display: none;">
+                    La **Amplitud (A)** es la altura máxima de la onda respecto al punto de equilibrio. 
+                    Determina la **intensidad** o **energía** de la onda electromagnética (cuánto "brilla" o cuán fuerte es la señal).
+                </p>
+            </div>
+            
+            <h2>🌐 Medio de Propagación</h2>
+            <div class="control-group">
+                <label for="medio">Seleccionar Medio (Índice de Refracción n):</label>
+                <select id="medio" name="medio">
+                    <option value="1.00">Vacío (n≈1.00)</option>
+                    <option value="1.0003">Aire (n≈1.0003)</option>
+                    <option value="1.33">Agua (n≈1.33)</option>
+                    <option value="1.52">Vidrio (n≈1.52)</option>
+                </select>
+            </div>
+            
+            <button id="iniciar-simulacion">Iniciar Simulación</button>
+        </section>
+
+        <section class="visualization">
+            <h2>✨ Visualización de Onda</h2>
+            <div id="wave-display">
+                <canvas id="wave-canvas"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Simulador EM - HTML, CSS & JS</p>
+    </footer>
     
-    </section>
+    <script src="script.js"></script> 
+</body>
+</html>
