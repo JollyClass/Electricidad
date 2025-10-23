@@ -1,11 +1,11 @@
 /* Variables CSS para manejo de color */
 :root {
-    --color-primary: #007bff;
-    --color-secondary: #28a745;
-    --color-background: #f4f7f6;
-    --color-card-bg: #ffffff;
-    --color-text: #343a40;
-    --color-wave: #ffc107;
+    --color-primary: #007bff; /* Azul */
+    --color-secondary: #28a745; /* Verde */
+    --color-background: #f4f7f6; /* Gris claro */
+    --color-card-bg: #ffffff; /* Blanco */
+    --color-text: #343a40; /* Gris oscuro */
+    --color-wave: #ffc107; /* Amarillo para la onda */
 }
 
 /* Estilos Globales */
@@ -24,6 +24,10 @@ header {
     padding: 20px 0;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin-bottom: 5px;
 }
 
 .container {
@@ -59,6 +63,7 @@ h2 {
     margin-bottom: 15px;
 }
 
+/* Estilos para los Controles */
 .control-group {
     margin-bottom: 15px;
     padding: 10px;
