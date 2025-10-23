@@ -80,6 +80,7 @@
         }
 
         .control-group label {
+            /* Necesario para alinear el "?" con el texto del label */
             display: inline-flex; 
             align-items: center; 
             margin-bottom: 5px;
@@ -150,14 +151,22 @@
             background-color: #0056b3; 
         }
 
-        /* Estilo para el texto de información */
+        /* Estilo para el texto de información (OCULTO por defecto) */
         .info-text {
+            display: none; 
             background-color: #e9f7ef; 
             border-left: 3px solid var(--color-secondary);
             padding: 10px;
             margin-top: 10px;
             font-size: 0.9em;
             color: var(--color-text);
+        }
+
+        /* REGLA CRÍTICA CSS PURO: Cuando el checkbox (input.info-toggle) está checked, muestra el párrafo adyacente (.info-text) */
+        /* Usamos el selector de hermanos general (~) */
+        #check-frecuencia:checked ~ #info-frecuencia,
+        #check-amplitud:checked ~ #info-amplitud {
+            display: block;
         }
 
         /* Pie de Página */
@@ -187,26 +196,28 @@
             <h2>⚙️ Controles de Onda</h2>
             
             <div class="control-group">
-                <label for="frecuencia">
-                    Frecuencia (Hz):
-                    <button class="info-btn" data-info="frecuencia">?</button> 
-                </label>
+                <input type="checkbox" id="check-frecuencia" class="info-toggle" hidden>
+                <label for="check-frecuencia" class="info-btn">?</label> 
+                
+                <label for="frecuencia">Frecuencia (Hz):</label>
                 <input type="range" id="frecuencia" name="frecuencia" min="10" max="100" value="50">
                 <span id="frecuencia-valor">50</span>
-                <p class="info-text" id="info-frecuencia" style="display: none;">
+                
+                <p class="info-text" id="info-frecuencia">
                     La **Frecuencia (f)** es el número de oscilaciones que pasan por un punto en un segundo. 
                     A mayor frecuencia, la **Longitud de Onda ($\lambda$) disminuye**, haciendo la onda más comprimida.
                 </p>
             </div>
 
             <div class="control-group">
-                <label for="amplitud">
-                    Amplitud (Unidades):
-                    <button class="info-btn" data-info="amplitud">?</button> 
-                </label>
+                <input type="checkbox" id="check-amplitud" class="info-toggle" hidden>
+                <label for="check-amplitud" class="info-btn">?</label> 
+
+                <label for="amplitud">Amplitud (Unidades):</label>
                 <input type="range" id="amplitud" name="amplitud" min="0.1" max="2" step="0.1" value="1.0">
                 <span id="amplitud-valor">1.0</span>
-                <p class="info-text" id="info-amplitud" style="display: none;">
+
+                <p class="info-text" id="info-amplitud">
                     La **Amplitud (A)** es la altura máxima de la onda respecto al punto de equilibrio. 
                     Determina la **intensidad** o **energía** de la onda electromagnética (cuán "fuerte" es).
                 </p>
@@ -247,6 +258,8 @@
         const amplitudValor = document.getElementById('amplitud-valor');
         const iniciarBoton = document.getElementById('iniciar-simulacion');
         const canvas = document.getElementById('wave-canvas');
+        
+        // --- El código de los botones de ayuda NO está aquí. Es manejado por CSS. ---
 
         // --- Variables de Simulación ---
         let ctx;
@@ -384,36 +397,13 @@
                 return; 
             }
             
-            // 1. Asignar los listeners de eventos de simulación
+            // Asignar los listeners de eventos de simulación
             frecuenciaInput.addEventListener('input', updateValues);
             amplitudInput.addEventListener('input', updateValues);
             medioSelect.addEventListener('change', updateValues);
             iniciarBoton.addEventListener('click', toggleSimulation);
 
-            // 2. MANEJO DE LA INFORMACIÓN CONTEXTUAL (Activación de los botones ?)
-            const infoButtons = document.querySelectorAll('.info-btn');
-            
-            infoButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    e.preventDefault(); 
-                    
-                    const targetName = button.dataset.info;
-                    const infoElement = document.getElementById(`info-${targetName}`);
-                    
-                    if (infoElement) {
-                        // Alternar la visibilidad de manera robusta
-                        if (infoElement.style.display === 'none' || infoElement.style.display === '') {
-                            infoElement.style.display = 'block';
-                        } else {
-                            infoElement.style.display = 'none';
-                        }
-                    } else {
-                        console.error(`Error de ID: No se encontró el elemento con ID: info-${targetName}. Revise el index.html.`);
-                    }
-                });
-            });
-
-            // 3. Inicializar el tamaño del canvas y los valores iniciales
+            // Inicializar el tamaño del canvas y los valores iniciales
             resizeCanvas();
             updateValues(); 
         });
