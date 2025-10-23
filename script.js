@@ -39,6 +39,7 @@ function updateValues() {
     frecuenciaValor.textContent = frecuenciaInput.value;
     amplitudValor.textContent = amplitudInput.value;
     
+    // Reiniciamos el tiempo para que el movimiento de la onda sea coherente al cambiar parámetros
     time = 0; 
 
     if (!isSimulating) {
@@ -56,8 +57,8 @@ function drawWave() {
     const n = parseFloat(medioSelect.value);            
     
     // Parámetros de la Onda
-    const waveNumber_k = f * n * 0.05; 
-    const angularFrequency_omega = f * 0.05 / n; 
+    const waveNumber_k = f * n * 0.05; // Controla la Longitud de Onda
+    const angularFrequency_omega = f * 0.05 / n; // Controla la Velocidad de Propagación
     
     // Dimensiones del Canvas
     const W = canvas.width;
@@ -152,16 +153,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. MANEJO DE LA INFORMACIÓN CONTEXTUAL (Activación de los botones ?)
     const infoButtons = document.querySelectorAll('.info-btn');
     
+    // Verificación de cuántos botones se encontraron:
+    console.log(`Verificación: Se encontraron ${infoButtons.length} botones de ayuda (?).`);
+
     infoButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault(); 
             
-            const targetId = `info-${button.dataset.info}`;
+            // Usamos getAttribute() para mayor compatibilidad que .dataset.info
+            const dataTarget = button.getAttribute('data-info'); 
+            const targetId = `info-${dataTarget}`; 
             const infoElement = document.getElementById(targetId);
             
+            // Verificación del ID del target:
+            console.log(`CLIC detectado en botón: ${dataTarget}. Buscando elemento con ID: ${targetId}`);
+            
             if (infoElement) {
-                // Alternar la visibilidad
+                // Alternar la visibilidad (esta línea es la que hace todo)
                 infoElement.style.display = (infoElement.style.display === 'none') ? 'block' : 'none';
+                console.log(`ÉXITO: Elemento ${targetId} alternado a: ${infoElement.style.display}`);
+            } else {
+                console.error(`ERROR CRÍTICO: No se encontró el elemento HTML con ID: ${targetId}. Revise su archivo index.html.`);
             }
         });
     });
