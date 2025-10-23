@@ -112,19 +112,18 @@
 
         /* Estilos para el Área de Visualización */
         #wave-display {
-            /* Eliminamos el min-height y centrado, dejamos que el canvas lo controle */
-            background-color: #111; /* Fondo oscuro para el área de onda */
+            background-color: #111; 
             border: 2px solid var(--color-wave);
             border-radius: 4px;
-            overflow: hidden; /* Asegura que el canvas se ajuste */
+            overflow: hidden;
             display: block;
         }
 
-        /* Aseguramos que el canvas llene su contenedor */
+        /* Aseguramos que el canvas llene su contenedor y tenga una altura visible */
         #wave-canvas {
             display: block;
             width: 100%;
-            height: 350px; /* Altura fija para el canvas */
+            height: 350px; /* Altura visual fija */
         }
         
         /* Estilos para el Pie de Página */
@@ -168,7 +167,7 @@
 
             <h2>🌐 Medio de Propagación</h2>
             <div class="control-group">
-                <label for="medio">Seleccionar Medio:</label>
+                <label for="medio">Seleccionar Medio (Índice de Refracción n):</label>
                 <select id="medio" name="medio">
                     <option value="1.00">Vacío (n≈1.00)</option>
                     <option value="1.0003">Aire (n≈1.0003)</option>
@@ -208,42 +207,56 @@
         let isSimulating = false;
         let time = 0;
         const speedOfLight = 300; // Velocidad de la luz simulada (para escala)
-
-        // Ajustar el tamaño del canvas al cargar (importante para el dibujo)
-        function resizeCanvas() {
-            // Usamos el 'clientWidth' del contenedor para el ancho
-            canvas.width = canvas.clientWidth; 
-            canvas.height = 350; // Mantenemos la altura fija del CSS
+        
+        // Función auxiliar para obtener el valor de una variable CSS (necesaria para el color)
+        function var2css(cssVar) {
+            return getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
         }
+
+        // --- Ajuste del Canvas (CLAVE PARA LA FUNCIONALIDAD) ---
+        function resizeCanvas() {
+            // Establecer los atributos width/height del canvas a sus dimensiones reales en píxeles.
+            // Esto es crucial para que el contexto de dibujo funcione correctamente.
+            canvas.width = canvas.offsetWidth; 
+            canvas.height = canvas.offsetHeight;
+            
+            // Redibujar la onda estática si está detenida o activa para ajustar a la nueva ventana.
+            if (!isSimulating) {
+                drawWave();
+            }
+        }
+        
+        // Ejecutar el redimensionamiento al cargar y al cambiar el tamaño de la ventana
+        resizeCanvas(); 
         window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+
 
         // --- Funciones de Actualización de Controles ---
-        function updateFrecuencia() {
+        function updateValues() {
             frecuenciaValor.textContent = frecuenciaInput.value;
-        }
-
-        function updateAmplitud() {
             amplitudValor.textContent = amplitudInput.value;
+            // Si la simulación está activa, la onda se actualizará automáticamente.
+            if (!isSimulating) {
+                 drawWave(); // Si está estática, actualiza el dibujo para reflejar los cambios
+            }
         }
         
         // Asignar los listeners de eventos para actualizar los valores en tiempo real
-        frecuenciaInput.addEventListener('input', updateFrecuencia);
-        amplitudInput.addEventListener('input', updateAmplitud);
+        frecuenciaInput.addEventListener('input', updateValues);
+        amplitudInput.addEventListener('input', updateValues);
+        medioSelect.addEventListener('change', updateValues);
 
         // Inicializar los valores mostrados
-        updateFrecuencia();
-        updateAmplitud();
+        updateValues();
 
         // --- Lógica de Dibujo de la Onda (Función Principal) ---
         function drawWave() {
             // 1. Obtener parámetros
-            const f = parseFloat(frecuenciaInput.value) * 0.1; // Frecuencia
+            const f = parseFloat(frecuenciaInput.value) * 0.1; // Frecuencia escalada
             const A = parseFloat(amplitudInput.value);          // Amplitud
             const n = parseFloat(medioSelect.value);            // Índice de refracción
             
-            // La velocidad de fase es V = C / n. 
-            // La longitud de onda es λ = V / f = (C / n) / f
+            // La longitud de onda simulada es inversamente proporcional a la frecuencia y el índice de refracción.
             const lambda = speedOfLight / (n * f); 
 
             // Dimensiones del Canvas
@@ -269,17 +282,15 @@
             ctx.strokeStyle = var2css('var(--color-wave)'); // Color de la onda
             ctx.lineWidth = 3;
             
+            const angularFrequency = 2 * Math.PI * f;
+            const waveNumber = (2 * Math.PI) / lambda;
+
             // Loop para dibujar la curva
             for (let x = 0; x < W; x++) {
-                // Posición normalizada (simulando distancia)
-                const normalizedX = (x / W) * (15 * lambda); // 15 longitudes de onda simuladas
+                // Mapeo horizontal (simulando distancia)
+                const normalizedX = (x / W) * (15 * lambda); // Mostrar 15 longitudes de onda simuladas a lo ancho
 
-                // Ecuación de onda: Y = A * sin( (2π/λ) * x - ω * t )
-                // ω (velocidad angular) = 2π * f
-                const angularFrequency = 2 * Math.PI * f;
-                const waveNumber = (2 * Math.PI) / lambda;
-
-                // Calcular la posición Y (desplazamiento)
+                // Ecuación de onda: Y = A * sin( k*x - ω*t )
                 const y = A * Math.sin(waveNumber * normalizedX - angularFrequency * time);
                 
                 // Mapear al espacio de píxeles
@@ -292,11 +303,6 @@
                 }
             }
             ctx.stroke();
-            
-            // Función auxiliar para obtener el valor de una variable CSS
-            function var2css(cssVar) {
-                return getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
-            }
         }
 
         // --- Bucle de Animación ---
@@ -306,12 +312,9 @@
                 return;
             }
             
-            // Incrementar el tiempo para el movimiento de la onda
+            // Incrementar el tiempo para el movimiento de la onda (la "propagación")
             time += 0.05; 
 
-            // Limitar el tiempo para evitar problemas de precisión a largo plazo (opcional)
-            if (time > 1000) time = 0; 
-            
             drawWave();
             
             // Solicitar el siguiente frame
@@ -322,23 +325,23 @@
         function toggleSimulation() {
             isSimulating = !isSimulating;
             if (isSimulating) {
+                // Iniciar la simulación
                 iniciarBoton.textContent = 'Detener Simulación';
                 iniciarBoton.style.backgroundColor = '#dc3545'; // Rojo
                 animate();
             } else {
+                // Detener la simulación
                 iniciarBoton.textContent = 'Iniciar Simulación';
                 iniciarBoton.style.backgroundColor = var2css('var(--color-secondary)'); // Verde
                 cancelAnimationFrame(animationFrameId);
+                drawWave(); // Redibujar la onda en su estado actual (estática)
             }
         }
 
-        // --- Event Listeners ---
+        // --- Event Listener para el Botón ---
         iniciarBoton.addEventListener('click', toggleSimulation);
-        frecuenciaInput.addEventListener('input', () => { if(isSimulating) drawWave(); });
-        amplitudInput.addEventListener('input', () => { if(isSimulating) drawWave(); });
-        medioSelect.addEventListener('change', () => { if(isSimulating) drawWave(); });
 
-        // Dibuja la onda estática inicial antes de iniciar
+        // Dibuja la onda estática inicial al cargar la página
         drawWave(); 
     </script>
 </body>
