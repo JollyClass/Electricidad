@@ -1,1 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Ondas Electromagnéticas</title>
+    
+    <style>
+        /* Variables CSS para manejo de color */
+        :root {
+            --color-primary: #007bff; /* Azul */
+            --color-secondary: #28a745; /* Verde */
+            --color-background: #f4f7f6; /* Gris claro */
+            --color-card-bg: #ffffff; /* Blanco */
+            --color-text: #343a40; /* Gris oscuro */
+            --color-wave: #ffc107; /* Amarillo para la onda (simulado) */
+        }
 
+        /* Estilos Globales */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin-bottom: 5px;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            gap: 20px;
+        }
+
+        /* Estilos para las Secciones (Controles y Visualización) */
+        .controls, .visualization {
+            background-color: var(--color-card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .controls {
+            flex: 1; /* Ocupa 1 parte del espacio */
+            min-width: 280px;
+        }
+
+        .visualization {
+            flex: 3; /* Ocupa 3 partes del espacio, es el área más grande */
+        }
+
+        h2 {
+            color: var(--color-primary);
+            border-bottom: 2px solid var(--color-secondary);
+            padding-bottom: 5px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        /* Estilos para los Controles */
+        .control-group {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="range"], select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        /* Estilos para el Botón */
+        #iniciar-simulacion {
+            background-color: var(--color-secondary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        #iniciar-simulacion:hover {
+            background-color: #218838; /* Tono más oscuro de verde */
+        }
+
+        /* Estilos para el Área de Visualización */
+        #wave-display {
+            min-height: 300px; /* Altura mínima para el área de gráfico */
+            background-color: #111; /* Fondo oscuro para el área de onda */
+            border: 2px solid var(--color-wave);
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #ccc;
+            flex-direction: column;
+        }
+
+        .placeholder {
+            margin-top: 10px;
+            padding: 5px;
+            font-style: italic;
+            color: var(--color-wave);
+        }
+
+        /* Estilos para el Pie de Página */
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            color: #6c757d;
+        }
+
+        /* Media Query para pantallas pequeñas (móviles) */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Apila las secciones verticalmente */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Simulador de Ondas Electromagnéticas 🌌</h1>
+        <p>Ajusta los parámetros y observa la propagación en diferentes medios.</p>
+    </header>
+
+    <main class="container">
+        <section class="controls">
+            <h2>⚙️ Controles de Onda</h2>
+            
+            <div class="control-group">
+                <label for="frecuencia">Frecuencia (Hz):</label>
+                <input type="range" id="frecuencia" name="frecuencia" min="1" max="100" value="50">
+                <span id="frecuencia-valor">50</span>
+            </div>
+
+            <div class="control-group">
+                <label for="amplitud">Amplitud (Unidades):</label>
+                <input type="range" id="amplitud" name="amplitud" min="0.1" max="2" step="0.1" value="1.0">
+                <span id="amplitud-valor">1.0</span>
+            </div>
+
+            <h2>🌐 Medio de Propagación</h2>
+            <div class="control-group">
+                <label for="medio">Seleccionar Medio:</label>
+                <select id="medio" name="medio">
+                    <option value="vacio">Vacío</option>
+                    <option value="aire">Aire</option>
+                    <option value="agua">Agua</option>
+                    <option value="vidrio">Vidrio</option>
+                </select>
+            </div>
+            
+            <button id="iniciar-simulacion">Iniciar/Detener Simulación</button>
+        </section>
+
+        <section class="visualization">
+            <h2>✨ Visualización de Onda</h2>
+            <div id="wave-display">
+                <p>El gráfico dinámico de la onda se mostraría aquí.</p>
+                <div class="placeholder"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Simulador EM - HTML & CSS Básico</p>
+    </footer>
+    
+    </body>
+</html>
