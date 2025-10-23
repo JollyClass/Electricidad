@@ -205,7 +205,7 @@
                 
                 <p class="info-text" id="info-frecuencia">
                     La **Frecuencia (f)** es el número de oscilaciones que pasan por un punto en un segundo. 
-                    A mayor frecuencia, la **Longitud de Onda ($\lambda$) disminuye**, haciendo la onda más comprimida.
+                    A mayor frecuencia, la **Longitud de Onda (λ) disminuye**, haciendo la onda más comprimida.
                 </p>
             </div>
 
@@ -309,9 +309,11 @@
             const f = parseFloat(frecuenciaInput.value); 
             const n = parseFloat(medioSelect.value);            
             
-            // Parámetros de la Onda
+            // Parámetros de la Onda (CORREGIDO)
+            // k = (2π·f·n)/c  → Mayor n = mayor k = longitud de onda más corta
             const waveNumber_k = f * n * 0.05; 
-            const angularFrequency_omega = f * 0.05 / n; 
+            // ω = 2π·f  → La frecuencia NO cambia con el medio
+            const angularFrequency_omega = f * 0.05;
             
             // Dimensiones del Canvas
             const W = canvas.width;
