@@ -592,7 +592,7 @@
 
     <main class="container">
         <section class="controls">
-            <h2>⚙ Controles de Onda</h2>
+            <h2>⚙️ Controles de Onda</h2>
             
             <div class="control-group">
                 <input type="checkbox" id="check-frecuencia" class="info-toggle" hidden>
@@ -644,7 +644,7 @@
                 <label for="medio">Seleccionar Medio (Índice de Refracción n)</label>
                 <select id="medio" name="medio">
                     <option value="1.00">🌌 Vacío (n≈1.00)</option>
-                    <option value="1.0003">🌬 Aire (n≈1.0003)</option>
+                    <option value="1.0003">🌬️ Aire (n≈1.0003)</option>
                     <option value="1.33">💧 Agua (n≈1.33)</option>
                     <option value="1.52">🔍 Vidrio (n≈1.52)</option>
                 </select>
@@ -684,11 +684,11 @@
                 <label for="calc-medio">Medio de propagación:</label>
                 <select id="calc-medio">
                     <option value="1.00">🌌 Vacío (n = 1.00)</option>
-                    <option value="1.0003">🌬 Aire (n = 1.0003)</option>
+                    <option value="1.0003">🌬️ Aire (n = 1.0003)</option>
                     <option value="1.33">💧 Agua (n = 1.33)</option>
                     <option value="1.52">🔍 Vidrio (n = 1.52)</option>
                     <option value="2.42">💎 Diamante (n = 2.42)</option>
-                    <option value="custom">✏ Personalizado</option>
+                    <option value="custom">✏️ Personalizado</option>
                 </select>
             </div>
 
@@ -721,11 +721,11 @@
                 <label for="calc-medio-freq">Medio de propagación:</label>
                 <select id="calc-medio-freq">
                     <option value="1.00">🌌 Vacío (n = 1.00)</option>
-                    <option value="1.0003">🌬 Aire (n = 1.0003)</option>
+                    <option value="1.0003">🌬️ Aire (n = 1.0003)</option>
                     <option value="1.33">💧 Agua (n = 1.33)</option>
                     <option value="1.52">🔍 Vidrio (n = 1.52)</option>
                     <option value="2.42">💎 Diamante (n = 2.42)</option>
-                    <option value="custom">✏ Personalizado</option>
+                    <option value="custom">✏️ Personalizado</option>
                 </select>
             </div>
 
@@ -803,7 +803,7 @@
             let ecuaciones = '';
             
             if (n === 1.00) {
-                explicacion = <strong>${medioNombre}:</strong> En el vacío, las ondas electromagnéticas viajan a su velocidad máxima: <strong>300,000 km/s</strong>. La longitud de onda es la <strong>más larga posible</strong> para la frecuencia dada.;
+                explicacion = `<strong>${medioNombre}:</strong> En el vacío, las ondas electromagnéticas viajan a su velocidad máxima: <strong>300,000 km/s</strong>. La longitud de onda es la <strong>más larga posible</strong> para la frecuencia dada.`;
                 
                 ecuaciones = `
                     <div class="ecuacion-box">
@@ -826,7 +826,7 @@
                     </div>
                 `;
             } else if (n === 1.0003) {
-                explicacion = <strong>${medioNombre}:</strong> El aire tiene un índice casi idéntico al vacío. La velocidad de la luz disminuye <strong>mínimamente</strong> (≈0.03%).;
+                explicacion = `<strong>${medioNombre}:</strong> El aire tiene un índice casi idéntico al vacío. La velocidad de la luz disminuye <strong>mínimamente</strong> (≈0.03%).`;
                 
                 ecuaciones = `
                     <div class="ecuacion-box">
@@ -844,7 +844,7 @@
                     </div>
                 `;
             } else if (n === 1.33) {
-                explicacion = <strong>${medioNombre}:</strong> El agua es más densa. La velocidad se reduce a <strong>225,000 km/s</strong> (75% de c). La longitud de onda se <strong>comprime 33%</strong>.;
+                explicacion = `<strong>${medioNombre}:</strong> El agua es más densa. La velocidad se reduce a <strong>225,000 km/s</strong> (75% de c). La longitud de onda se <strong>comprime 33%</strong>.`;
                 
                 ecuaciones = `
                     <div class="ecuacion-box">
@@ -867,7 +867,7 @@
                     </div>
                 `;
             } else if (n === 1.52) {
-                explicacion = <strong>${medioNombre}:</strong> El vidrio es muy denso. La velocidad cae a <strong>197,000 km/s</strong> (65% de c). La longitud de onda se <strong>comprime 52%</strong>.;
+                explicacion = `<strong>${medioNombre}:</strong> El vidrio es muy denso. La velocidad cae a <strong>197,000 km/s</strong> (65% de c). La longitud de onda se <strong>comprime 52%</strong>.`;
                 
                 ecuaciones = `
                     <div class="ecuacion-box">
@@ -892,7 +892,7 @@
             }
             
             explicacion += ecuaciones;
-            explicacion += <br><em>💡 La frecuencia NO cambia entre medios, por eso el color permanece constante.</em>;
+            explicacion += `<br><em>💡 La frecuencia NO cambia entre medios, por eso el color permanece constante.</em>`;
             
             textoExplicacion.innerHTML = explicacion;
         }
@@ -901,7 +901,7 @@
         function updateValues() {
             const amplitudVal = parseFloat(amplitudInput.value);
             frecuenciaValor.textContent = frecuenciaInput.value;
-            amplitudValor.textContent = ${amplitudVal.toFixed(1)} V/m;
+            amplitudValor.textContent = `${amplitudVal.toFixed(1)} V/m`;
             
             time = 0;
             drawProgress = 0;
@@ -983,8 +983,8 @@
             // Etiquetas
             ctx.fillStyle = 'rgba(100, 255, 100, 0.7)';
             ctx.font = '11px "Segoe UI"';
-            ctx.fillText(+${amplitudActual.toFixed(0)} V/m, 5, centerY - (amplitudActual * scaleY) - 5);
-            ctx.fillText(-${amplitudActual.toFixed(0)} V/m, 5, centerY + (amplitudActual * scaleY) + 15);
+            ctx.fillText(`+${amplitudActual.toFixed(0)} V/m`, 5, centerY - (amplitudActual * scaleY) - 5);
+            ctx.fillText(`-${amplitudActual.toFixed(0)} V/m`, 5, centerY + (amplitudActual * scaleY) + 15);
 
             // Dibujar la Onda
             const maxX = isSimulating ? W * drawProgress : W;
@@ -1048,16 +1048,16 @@
             
             ctx.fillStyle = 'white';
             ctx.font = 'bold 13px "Segoe UI"';
-            ctx.fillText(⚡ Campo: E₀ = ${amplitudActual.toFixed(1)} V/m, 20, 30);
-            ctx.fillText(📊 Frecuencia: f = ${f} Hz, 20, 50);
-            ctx.fillText(🌐 Medio: n = ${n}, 20, 70);
+            ctx.fillText(`⚡ Campo: E₀ = ${amplitudActual.toFixed(1)} V/m`, 20, 30);
+            ctx.fillText(`📊 Frecuencia: f = ${f} Hz`, 20, 50);
+            ctx.fillText(`🌐 Medio: n = ${n}`, 20, 70);
             
             ctx.fillStyle = var2css('var(--color-wave)');
             ctx.font = 'bold 12px "Segoe UI"';
             if (intensidad >= 0.001) {
-                ctx.fillText(💡 Intensidad: ${intensidad.toFixed(4)} W/m², 20, 85);
+                ctx.fillText(`💡 Intensidad: ${intensidad.toFixed(4)} W/m²`, 20, 85);
             } else {
-                ctx.fillText(💡 Intensidad: ${intensidad.toExponential(2)} W/m², 20, 85);
+                ctx.fillText(`💡 Intensidad: ${intensidad.toExponential(2)} W/m²`, 20, 85);
             }
         }
 
@@ -1177,13 +1177,13 @@
             
             let lambdaStr;
             if (lambda >= 1) {
-                lambdaStr = λ = ${lambda.toFixed(4)} m;
+                lambdaStr = `λ = ${lambda.toFixed(4)} m`;
             } else if (lambda >= 0.001) {
-                lambdaStr = λ = ${(lambda * 1000).toFixed(4)} mm;
+                lambdaStr = `λ = ${(lambda * 1000).toFixed(4)} mm`;
             } else if (lambda >= 0.000001) {
-                lambdaStr = λ = ${(lambda * 1000000).toFixed(4)} µm;
+                lambdaStr = `λ = ${(lambda * 1000000).toFixed(4)} µm`;
             } else {
-                lambdaStr = λ = ${(lambda * 1000000000).toFixed(4)} nm;
+                lambdaStr = `λ = ${(lambda * 1000000000).toFixed(4)} nm`;
             }
             
             lambdaDiv.textContent = lambdaStr;
@@ -1232,13 +1232,13 @@
             
             let freqStr;
             if (frecuencia >= 1e9) {
-                freqStr = f = ${(frecuencia / 1e9).toFixed(4)} GHz;
+                freqStr = `f = ${(frecuencia / 1e9).toFixed(4)} GHz`;
             } else if (frecuencia >= 1e6) {
-                freqStr = f = ${(frecuencia / 1e6).toFixed(4)} MHz;
+                freqStr = `f = ${(frecuencia / 1e6).toFixed(4)} MHz`;
             } else if (frecuencia >= 1e3) {
-                freqStr = f = ${(frecuencia / 1e3).toFixed(4)} kHz;
+                freqStr = `f = ${(frecuencia / 1e3).toFixed(4)} kHz`;
             } else {
-                freqStr = f = ${frecuencia.toFixed(4)} Hz;
+                freqStr = `f = ${frecuencia.toFixed(4)} Hz`;
             }
             
             freqDiv.textContent = freqStr;
