@@ -810,18 +810,82 @@
                         <h4>🔬 Ecuaciones en el Vacío</h4>
                         
                         <div class="ecuacion">
-                            E(x,t) = E₀ · sin(kx - ωt) con E₀ = ${amplitudActual.toFixed(1)} V/m
-                            <div class="ecuacion-descripcion">Campo eléctrico actual</div>
+                            E(x,t) = E₀ · sin(kx - ωt)
+                            <div class="ecuacion-descripcion">Campo eléctrico de la onda (con E₀ = ${amplitudActual.toFixed(1)} V/m)</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • <strong>E(x,t)</strong>: Campo eléctrico en la posición x y tiempo t (medido en V/m)<br>
+                            • <strong>E₀</strong>: Amplitud máxima del campo = ${amplitudActual.toFixed(1)} V/m (tu valor actual)<br>
+                            • <strong>k</strong>: Número de onda = 2π/λ (cuántos ciclos hay por metro)<br>
+                            • <strong>x</strong>: Posición en el espacio (metros)<br>
+                            • <strong>ω</strong>: Frecuencia angular = 2πf (radianes por segundo)<br>
+                            • <strong>t</strong>: Tiempo (segundos)<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> Esta ecuación te da el valor instantáneo del campo eléctrico en cualquier punto del espacio (x) y momento del tiempo (t). El término (kx - ωt) representa la fase de la onda que viaja hacia la derecha.
                         </div>
                         
                         <div class="ecuacion">
-                            I = ${intensidad >= 0.001 ? intensidad.toFixed(4) : intensidad.toExponential(2)} W/m²
-                            <div class="ecuacion-descripcion">Intensidad con tu amplitud actual</div>
+                            I = (ε₀ · c · E₀²) / 2
+                            <div class="ecuacion-descripcion">Intensidad = ${intensidad >= 0.001 ? intensidad.toFixed(4) : intensidad.toExponential(2)} W/m²</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • <strong>I</strong>: Intensidad luminosa (potencia por área) en W/m²<br>
+                            • <strong>ε₀</strong>: Permitividad del vacío = 8.854×10⁻¹² F/m (constante universal)<br>
+                            • <strong>c</strong>: Velocidad de la luz = 3×10⁸ m/s<br>
+                            • <strong>E₀</strong>: Amplitud del campo eléctrico = ${amplitudActual.toFixed(1)} V/m<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> Esta fórmula calcula cuánta energía transporta la onda por unidad de área. Nota que la intensidad es proporcional a E₀², así que duplicar el campo eléctrico cuadruplica la intensidad. Úsala para calcular la potencia de señales electromagnéticas o la energía de la luz solar.
                         </div>
                         
                         <div class="ecuacion">
                             λ = c/f = ${(300000000/f).toExponential(2)} m
-                            <div class="ecuacion-descripcion">Longitud de onda</div>
+                            <div class="ecuacion-descripcion">Longitud de onda con f = ${f} Hz</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • <strong>λ</strong>: Longitud de onda (distancia entre dos crestas consecutivas) en metros<br>
+                            • <strong>c</strong>: Velocidad de la luz = 3×10⁸ m/s<br>
+                            • <strong>f</strong>: Frecuencia = ${f} Hz (oscilaciones por segundo)<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> Esta ecuación relaciona la velocidad, frecuencia y longitud de onda. A mayor frecuencia, menor longitud de onda. Úsala para: 1) Determinar el tamaño de antenas (λ/2 o λ/4), 2) Calcular espaciado en redes de difracción, 3) Identificar rangos del espectro (radio, microondas, luz visible, etc.).
+                        </div>
+                        
+                        <div class="ecuacion">
+                            k = 2πf/c = ${((2 * Math.PI * f) / 300000000).toExponential(2)} rad/m
+                            <div class="ecuacion-descripcion">Número de onda</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • <strong>k</strong>: Número de onda (radianes de fase por metro)<br>
+                            • Relacionado con λ por: k = 2π/λ<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> El número de onda indica qué tan "comprimida" está la onda espacialmente. Valores altos de k significan muchas oscilaciones por metro (onda comprimida). Se usa en: 1) Mecánica cuántica (momento p = ℏk), 2) Análisis de Fourier espacial, 3) Diseño de cavidades resonantes.
+                        </div>
+                        
+                        <div class="ecuacion">
+                            ω = 2πf = ${(2 * Math.PI * f).toFixed(2)} rad/s
+                            <div class="ecuacion-descripcion">Frecuencia angular con f = ${f} Hz</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • <strong>ω</strong>: Frecuencia angular (radianes de fase por segundo)<br>
+                            • Es simplemente la frecuencia f multiplicada por 2π<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> ω mide qué tan rápido oscila la onda en el tiempo. Es más conveniente que f en matemáticas porque usa radianes. IMPORTANTE: ω NO cambia cuando la luz entra en diferentes medios, por eso el color de la luz permanece constante (el color depende de la frecuencia, no de la velocidad o longitud de onda).
+                        </div>
+                        
+                        <div class="ecuacion">
+                            v = c = 3×10⁸ m/s
+                            <div class="ecuacion-descripcion">Velocidad de propagación máxima</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • <strong>c</strong>: Velocidad de la luz en el vacío (constante universal)<br>
+                            • Es el límite de velocidad del universo<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> Esta constante aparece en innumerables fórmulas: E = mc², teoría de la relatividad, electromagnetismo. En el vacío, TODAS las ondas EM (radio, luz, rayos X) viajan a esta velocidad. Úsala para calcular: 1) Tiempos de propagación de señales (satélites, fibra óptica), 2) Distancias en astronomía (años luz), 3) Sincronización GPS.
                         </div>
                     </div>
                 `;
@@ -833,13 +897,53 @@
                         <h4>🔬 Ecuaciones en el Aire</h4>
                         
                         <div class="ecuacion">
-                            v = c/n = ${(300000000/n).toExponential(2)} m/s
-                            <div class="ecuacion-descripcion">Velocidad en el aire</div>
+                            E(x,t) = E₀ · sin(knx - ωt)
+                            <div class="ecuacion-descripcion">Campo eléctrico con n = ${n}</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué cambia respecto al vacío?</strong><br>
+                            • El número de onda ahora es: k_aire = k_vacío × n = k × ${n}<br>
+                            • Como n ≈ 1, el cambio es casi imperceptible<br>
+                            • <strong>ω permanece constante</strong> (por eso el color no cambia)<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> Para efectos prácticos, las ondas en aire se comportan igual que en el vacío. Esta aproximación es válida para: 1) Transmisión inalámbrica (WiFi, radio, TV), 2) Comunicaciones por satélite, 3) Astronomía óptica desde la Tierra. Solo en mediciones de alta precisión se nota la diferencia.
                         </div>
                         
                         <div class="ecuacion">
-                            λ = c/(nf) = ${(300000000/(n*f)).toExponential(2)} m
-                            <div class="ecuacion-descripcion">Longitud de onda</div>
+                            v = c/n = ${(300000000/n).toExponential(2)} m/s
+                            <div class="ecuacion-descripcion">Velocidad en el aire (99.97% de c)</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • <strong>v</strong>: Velocidad de la luz en el medio<br>
+                            • <strong>n</strong>: Índice de refracción del aire = ${n}<br>
+                            • La velocidad disminuye solo 0.03% respecto al vacío<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> Esta fórmula (v = c/n) es fundamental en óptica. Se usa para: 1) Calcular tiempos de propagación en fibras ópticas, 2) Diseñar sistemas de radar, 3) Correcciones en GPS y telecomunicaciones. El índice n siempre es ≥ 1, por lo que v ≤ c siempre.
+                        </div>
+                        
+                        <div class="ecuacion">
+                            λ_aire = c/(nf) = ${(300000000/(n*f)).toExponential(2)} m
+                            <div class="ecuacion-descripcion">Longitud de onda en el aire</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • La longitud de onda en el aire es λ_aire = λ_vacío / n<br>
+                            • Como n ≈ 1, λ_aire ≈ λ_vacío<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> Aunque la diferencia es mínima, se debe considerar en: 1) Interferometría de precisión, 2) Calibración de instrumentos ópticos, 3) Experimentos de Michelson-Morley (histórico). Para aplicaciones cotidianas, puedes usar λ_vacío sin problemas.
+                        </div>
+                        
+                        <div class="ecuacion">
+                            k_aire = 2πfn/c = ${((2 * Math.PI * f * n) / 300000000).toExponential(2)} rad/m
+                            <div class="ecuacion-descripcion">Número de onda en el aire</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • k aumenta ligeramente porque λ disminuye<br>
+                            • k_aire = k_vacío × n = k × ${n}<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> El pequeño cambio en k es relevante en: 1) Análisis de dispersión atmosférica, 2) Correcciones en astronomía, 3) Mediciones geodésicas de alta precisión. En la mayoría de aplicaciones de ingeniería, la diferencia es despreciable.
                         </div>
                     </div>
                 `;
@@ -851,18 +955,73 @@
                         <h4>🔬 Ecuaciones en el Agua</h4>
                         
                         <div class="ecuacion">
-                            v = c/n = ${(300000000/n/1000000).toFixed(2)} × 10⁶ m/s
-                            <div class="ecuacion-descripcion">Velocidad al 75% de c</div>
+                            E(x,t) = E₀ · sin(knx - ωt)
+                            <div class="ecuacion-descripcion">Campo eléctrico con n = ${n}</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué cambia respecto al vacío?</strong><br>
+                            • k_agua = k_vacío × 1.33 (33% mayor, ondas más comprimidas)<br>
+                            • La onda "cabe" 1.33 veces más en el mismo espacio<br>
+                            • <strong>ω y f NO cambian</strong> (el color bajo el agua es el mismo)<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> Esta ecuación describe la luz bajo el agua. Aplicaciones: 1) Diseño de cámaras submarinas, 2) Fotografía acuática (corrección de colores por absorción), 3) Comunicación óptica submarina, 4) Estudios de ecología marina (penetración de luz).
                         </div>
                         
                         <div class="ecuacion">
-                            λ = c/(nf) = ${(300000000/(n*f)).toExponential(2)} m
-                            <div class="ecuacion-descripcion">Longitud de onda 33% más corta</div>
+                            v_agua = c/n = ${(300000000/n/1000000).toFixed(2)} × 10⁶ m/s
+                            <div class="ecuacion-descripcion">Velocidad reducida al 75% de c</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • La luz viaja 25% más lento en agua que en el vacío<br>
+                            • Esto ocurre porque los electrones del agua interactúan con los fotones<br>
+                            • No es que los fotones se "frenen", sino que son absorbidos y reemitidos<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> Esta reducción de velocidad causa efectos prácticos: 1) Los objetos bajo el agua parecen más cercanos (factor 4/3), 2) Las piscinas parecen menos profundas, 3) Diseño de lentes acuáticas, 4) Cálculo de tiempos en comunicaciones submarinas.
                         </div>
                         
                         <div class="ecuacion">
-                            Ley de Snell: n₁sin(θ₁) = n₂sin(θ₂)
-                            <div class="ecuacion-descripcion">Refracción en la interfaz</div>
+                            λ_agua = c/(nf) = ${(300000000/(n*f)).toExponential(2)} m
+                            <div class="ecuacion-descripcion">Longitud de onda 25% más corta (compresión del 33%)</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • λ_agua = λ_vacío / 1.33 ≈ 0.75 × λ_vacío<br>
+                            • La onda se "comprime" al entrar al agua<br>
+                            • Pero la frecuencia (y el color) permanece constante<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> Este cambio es crucial en: 1) Diseño de antenas submarinas (deben ser más pequeñas), 2) Resonadores acuáticos, 3) Experimentos de interferencia en agua, 4) Cálculo de efectos Cherenkov (radiación azul en reactores nucleares).
+                        </div>
+                        
+                        <div class="ecuacion">
+                            k_agua = 2πfn/c = ${((2 * Math.PI * f * n) / 300000000).toExponential(2)} rad/m
+                            <div class="ecuacion-descripcion">Número de onda 33% mayor</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • k_agua = 1.33 × k_vacío (más radianes por metro)<br>
+                            • Indica mayor "compresión espacial" de la onda<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> El aumento de k afecta: 1) Patrones de difracción bajo el agua, 2) Diseño de redes de difracción para espectroscopía acuática, 3) Análisis de Fourier espacial en medios densos, 4) Cálculo de modos en guías de onda líquidas.
+                        </div>
+                        
+                        <div class="ecuacion">
+                            Ley de Snell: n₁ sin(θ₁) = n₂ sin(θ₂)
+                            <div class="ecuacion-descripcion">Refracción en la interfaz agua-aire</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • <strong>n₁, n₂</strong>: Índices de refracción de ambos medios<br>
+                            • <strong>θ₁</strong>: Ángulo de incidencia (respecto a la normal)<br>
+                            • <strong>θ₂</strong>: Ángulo de refracción<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong><br>
+                            <strong>Ejemplo:</strong> Luz viajando del agua (n₁=1.33) al aire (n₂=1) con θ₁=30°<br>
+                            → 1.33 × sin(30°) = 1 × sin(θ₂)<br>
+                            → sin(θ₂) = 0.665<br>
+                            → θ₂ = 41.7°<br>
+                            <br>
+                            La luz se "dobla" alejándose de la normal al pasar a un medio menos denso. Aplicaciones: 1) Diseño de periscopios, 2) Corrección de visión submarina, 3) Fibra óptica, 4) Prismas y lentes.
                         </div>
                     </div>
                 `;
@@ -874,18 +1033,86 @@
                         <h4>🔬 Ecuaciones en el Vidrio</h4>
                         
                         <div class="ecuacion">
-                            v = c/n = ${(300000000/n/1000000).toFixed(2)} × 10⁶ m/s
-                            <div class="ecuacion-descripcion">Velocidad al 65% de c</div>
+                            E(x,t) = E₀ · sin(knx - ωt)
+                            <div class="ecuacion-descripcion">Campo eléctrico con n = ${n}</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué cambia respecto al vacío?</strong><br>
+                            • k_vidrio = k_vacío × 1.52 (52% mayor, máxima compresión)<br>
+                            • La onda está muy "apretada" espacialmente<br>
+                            • Esto permite que lentes delgadas tengan gran poder de enfoque<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> El alto índice del vidrio permite: 1) Lentes potentes y compactas (microscopios, telescopios), 2) Prismas que separan colores eficientemente, 3) Fibra óptica con gran capacidad de transmisión, 4) Recubrimientos anti-reflejo multicapa.
                         </div>
                         
                         <div class="ecuacion">
-                            λ = c/(nf) = ${(300000000/(n*f)).toExponential(2)} m
-                            <div class="ecuacion-descripcion">Longitud de onda 52% más corta</div>
+                            v_vidrio = c/n = ${(300000000/n/1000000).toFixed(2)} × 10⁶ m/s
+                            <div class="ecuacion-descripcion">Velocidad reducida al 65% de c</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • La luz viaja 35% más lento que en el vacío<br>
+                            • Esta gran reducción permite controlar la luz eficientemente<br>
+                            • El retardo es aprovechable en dispositivos ópticos<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> La velocidad reducida es clave en: 1) Diseño de líneas de retardo ópticas, 2) Cálculo de tiempos de propagación en fibra óptica (importante para internet de alta velocidad), 3) Medidores de índice de refracción, 4) Sincronización en sistemas láser.
                         </div>
                         
                         <div class="ecuacion">
-                            θ_crítico = ${(Math.asin(1/n) * 180 / Math.PI).toFixed(2)}°
-                            <div class="ecuacion-descripcion">Ángulo crítico para reflexión total</div>
+                            λ_vidrio = c/(nf) = ${(300000000/(n*f)).toExponential(2)} m
+                            <div class="ecuacion-descripcion">Longitud de onda 34% más corta</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • λ_vidrio = λ_vacío / 1.52 ≈ 0.66 × λ_vacío<br>
+                            • Es la mayor compresión entre los medios comunes<br>
+                            • Permite dispositivos ópticos más compactos<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> La corta longitud de onda en vidrio permite: 1) Cavidades láser más pequeñas, 2) Filtros de interferencia muy precisos, 3) Guías de onda microscópicas en chips fotónicos, 4) Mayor resolución en microscopía de inmersión.
+                        </div>
+                        
+                        <div class="ecuacion">
+                            k_vidrio = 2πfn/c = ${((2 * Math.PI * f * n) / 300000000).toExponential(2)} rad/m
+                            <div class="ecuacion-descripcion">Número de onda 52% mayor (máxima compresión)</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • k_vidrio = 1.52 × k_vacío (muchos ciclos por metro)<br>
+                            • Mayor k significa mayor cambio de fase por distancia<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> El alto k es útil en: 1) Compensadores de fase compactos, 2) Placas retardadoras (λ/4, λ/2), 3) Interferómetros de alta resolución, 4) Moduladores electro-ópticos donde pequeños cambios de n producen grandes cambios de fase.
+                        </div>
+                        
+                        <div class="ecuacion">
+                            θ_crítico = arcsin(1/n) = ${(Math.asin(1/n) * 180 / Math.PI).toFixed(2)}°
+                            <div class="ecuacion-descripcion">Ángulo crítico para reflexión interna total</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • <strong>θ_crítico</strong>: Ángulo máximo para que la luz escape del vidrio<br>
+                            • Si θ > ${(Math.asin(1/n) * 180 / Math.PI).toFixed(2)}°, la luz se refleja 100% internamente<br>
+                            • Solo existe cuando la luz va de medio denso a menos denso<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong><br>
+                            <strong>Ejemplo práctico:</strong> Fibra óptica<br>
+                            • Núcleo de vidrio (n=1.52) rodeado de cubierta (n=1.48)<br>
+                            • θ_c = arcsin(1.48/1.52) = 76.7°<br>
+                            • La luz con θ > 76.7° queda "atrapada" y viaja sin pérdidas<br>
+                            <br>
+                            <strong>Aplicaciones:</strong> 1) Fibras ópticas (internet global), 2) Prismas de reflexión total (binoculares), 3) Diamantes brillantes (θ_c pequeño atrapa la luz), 4) Sensores de índice de refracción.
+                        </div>
+                        
+                        <div class="ecuacion">
+                            Dispersión: n(λ) = A + B/λ² (Ecuación de Cauchy)
+                            <div class="ecuacion-descripcion">El índice varía con la longitud de onda</div>
+                        </div>
+                        <div class="ecuacion-explicacion">
+                            <strong>¿Qué representa?</strong><br>
+                            • El vidrio tiene índice diferente para cada color<br>
+                            • Luz azul (λ corta): n más alto, se desvía más<br>
+                            • Luz roja (λ larga): n más bajo, se desvía menos<br>
+                            <br>
+                            <strong>¿Cómo usarla?</strong> La dispersión cromática es responsable de: 1) Arcoíris en prismas, 2) Aberraciones cromáticas en lentes (se corrige con lentes acromáticas), 3) Espectrógrafos para análisis químico, 4) Limitación en ancho de banda de fibra óptica (se compensa con fibras especiales).
                         </div>
                     </div>
                 `;
