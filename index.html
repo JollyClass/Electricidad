@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Login - Fixed</title>
+    <title>Minecraft Login</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
@@ -20,7 +20,7 @@
             position: relative;
         }
 
-        /* Capa de oscuridad y partículas */
+        /* Capa de oscuridad */
         body::before {
             content: '';
             position: fixed;
@@ -29,31 +29,33 @@
             z-index: 1;
         }
 
-        /* Partículas estilo "Ender" mejoradas - Más notorias */
+        /* Partículas */
         .particle {
             position: fixed;
-            width: 10px; /* Aumentado de 5px a 10px para más visibilidad */
+            width: 10px;
             height: 10px;
-            background: #ff00ff; /* Color más brillante */
-            box-shadow: 0 0 10px #ff00ff; /* Efecto glow para resaltar */
+            background: #b026ff;
+            box-shadow: 0 0 15px #b026ff, 0 0 25px #b026ff;
             z-index: 2;
             pointer-events: none;
             animation: moveUp linear infinite;
-            border-radius: 50%; /* Forma circular para un toque mágico */
+            border-radius: 50%;
         }
 
         @keyframes moveUp {
             0% { transform: translateY(110vh) scale(1); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(0.3); opacity: 0; }
         }
 
-        /* GIFs con Z-Index superior para que no los tape el fondo */
+        /* GIFs decorativos */
         .gif-decor {
             position: fixed;
-            z-index: 15; /* Por encima de todo */
+            z-index: 15;
             image-rendering: pixelated;
             pointer-events: none;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
         }
 
         .bee-1 {
@@ -89,84 +91,647 @@
             95% { opacity: 1; transform: translate(30px, -10px); }
         }
 
-        /* Contenedor del Login */
+        /* CONTENEDOR DEL LOGIN - SUPER LLAMATIVO */
         .login-container {
-            background: rgba(61, 43, 31, 0.95);
-            border: 6px solid #8B4513;
-            outline: 6px solid #000;
-            padding: 40px;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(10, 22, 40, 0.95) 0%,
+                    rgba(26, 39, 68, 0.95) 50%,
+                    rgba(10, 22, 40, 0.95) 100%
+                );
+            border: 4px solid transparent;
+            background-clip: padding-box;
+            padding: 45px 40px;
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
             z-index: 20;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        h1 { color: #FFD700; text-shadow: 4px 4px 0 #000; font-size: 18px; margin-bottom: 25px; }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        label { color: #FFF; font-size: 9px; text-shadow: 2px 2px 0 #000; display: block; margin-bottom: 8px; }
+        /* Borde animado dorado y azul */
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(
+                45deg,
+                #d4a574,
+                #5b8fd9,
+                #d4a574,
+                #5b8fd9,
+                #d4a574
+            );
+            background-size: 400% 400%;
+            animation: borderGlow 4s ease infinite;
+            z-index: -1;
+            filter: blur(0px);
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Sombra externa brillante */
+        .login-container::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            background: radial-gradient(
+                circle,
+                rgba(212, 165, 116, 0.4) 0%,
+                rgba(91, 143, 217, 0.3) 50%,
+                transparent 100%
+            );
+            z-index: -2;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* Bloques decorativos flotantes */
+        .floating-block {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #d4a574 0%, #b8925f 100%);
+            border: 3px solid rgba(10, 22, 40, 0.8);
+            box-shadow: 
+                0 0 15px rgba(212, 165, 116, 0.6),
+                inset 2px 2px 0 rgba(232, 197, 153, 0.5);
+            animation: floatBlock 4s ease-in-out infinite;
+        }
+
+        .block-1 {
+            top: -15px;
+            left: 30px;
+            animation-delay: 0s;
+        }
+
+        .block-2 {
+            top: -15px;
+            right: 30px;
+            animation-delay: 1s;
+        }
+
+        .block-3 {
+            bottom: -15px;
+            left: 30px;
+            animation-delay: 2s;
+        }
+
+        .block-4 {
+            bottom: -15px;
+            right: 30px;
+            animation-delay: 3s;
+        }
+
+        @keyframes floatBlock {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        /* Rayos de luz decorativos */
+        .light-ray {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent,
+                rgba(91, 143, 217, 0.3),
+                transparent
+            );
+            animation: rayMove 3s ease-in-out infinite;
+        }
+
+        .ray-1 { left: 20%; animation-delay: 0s; }
+        .ray-2 { left: 50%; animation-delay: 1s; }
+        .ray-3 { left: 80%; animation-delay: 2s; }
+
+        @keyframes rayMove {
+            0%, 100% { opacity: 0; transform: translateY(-100%); }
+            50% { opacity: 1; transform: translateY(100%); }
+        }
+
+        h1 { 
+            color: #d4a574;
+            text-shadow: 
+                0 0 10px rgba(212, 165, 116, 0.8),
+                0 0 20px rgba(212, 165, 116, 0.5),
+                0 0 30px rgba(212, 165, 116, 0.3),
+                3px 3px 0 #0a1628;
+            font-size: 24px; 
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            animation: titlePulse 2s ease-in-out infinite;
+            letter-spacing: 2px;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { 
+                transform: scale(1);
+                text-shadow: 
+                    0 0 10px rgba(212, 165, 116, 0.8),
+                    0 0 20px rgba(212, 165, 116, 0.5),
+                    0 0 30px rgba(212, 165, 116, 0.3),
+                    3px 3px 0 #0a1628;
+            }
+            50% { 
+                transform: scale(1.05);
+                text-shadow: 
+                    0 0 20px rgba(212, 165, 116, 1),
+                    0 0 30px rgba(212, 165, 116, 0.8),
+                    0 0 40px rgba(212, 165, 116, 0.5),
+                    3px 3px 0 #0a1628;
+            }
+        }
+
+        .subtitle {
+            color: #5b8fd9;
+            font-size: 9px;
+            margin-bottom: 30px;
+            text-shadow: 
+                0 0 10px rgba(91, 143, 217, 0.6),
+                2px 2px 0 #0a1628;
+            position: relative;
+            z-index: 1;
+            animation: subtitleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes subtitleGlow {
+            from { text-shadow: 0 0 10px rgba(91, 143, 217, 0.6), 2px 2px 0 #0a1628; }
+            to { text-shadow: 0 0 15px rgba(91, 143, 217, 1), 2px 2px 0 #0a1628; }
+        }
+
+        .form-group { 
+            margin-bottom: 22px; 
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        label { 
+            color: #5b8fd9;
+            font-size: 10px; 
+            text-shadow: 
+                0 0 8px rgba(91, 143, 217, 0.5),
+                2px 2px 0 #0a1628; 
+            display: block; 
+            margin-bottom: 10px;
+        }
         
         input {
-            width: 100%; padding: 12px;
-            background: #000; border: 4px solid #555;
-            color: #55FF55; font-family: 'Press Start 2P';
-            font-size: 10px; outline: none;
+            width: 100%; 
+            padding: 15px;
+            background: rgba(10, 22, 40, 0.7); 
+            border: 3px solid #2c4875;
+            color: #5b8fd9;
+            font-family: 'Press Start 2P';
+            font-size: 10px; 
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 3px 6px rgba(0,0,0,0.6),
+                0 0 0 1px rgba(91, 143, 217, 0.2);
+            position: relative;
+        }
+
+        input:focus {
+            border-color: #d4a574;
+            background: rgba(10, 22, 40, 0.9);
+            color: #d4a574;
+            box-shadow: 
+                inset 0 3px 6px rgba(0,0,0,0.6),
+                0 0 0 2px rgba(212, 165, 116, 0.5),
+                0 0 25px rgba(212, 165, 116, 0.4),
+                0 0 40px rgba(212, 165, 116, 0.2);
+            transform: scale(1.02);
+        }
+
+        input::placeholder {
+            color: #2c4875;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #5b8fd9;
+            text-shadow: 1px 1px 0 #0a1628;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #d4a574;
+        }
+
+        .forgot-password {
+            color: #d4a574;
+            text-decoration: none;
+            text-shadow: 
+                0 0 5px rgba(212, 165, 116, 0.5),
+                1px 1px 0 #0a1628;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: #e8c599;
+            text-shadow: 
+                0 0 15px rgba(212, 165, 116, 0.8),
+                1px 1px 0 #0a1628;
+            transform: scale(1.05);
         }
 
         .btn-login {
-            width: 100%; padding: 15px;
-            background: #3c8527; border: 4px solid #000;
-            color: #FFF; font-family: 'Press Start 2P';
-            cursor: pointer; box-shadow: inset -4px -4px 0 #1a3d11;
+            width: 100%; 
+            padding: 18px;
+            background: linear-gradient(135deg, #d4a574 0%, #e8c599 50%, #d4a574 100%);
+            background-size: 200% 200%;
+            border: 4px solid #0a1628;
+            outline: 2px solid #d4a574;
+            color: #0a1628;
+            font-family: 'Press Start 2P';
+            font-size: 12px;
+            cursor: pointer; 
+            box-shadow: 
+                0 0 20px rgba(212, 165, 116, 0.6),
+                inset 0 -4px 0 #9d7a4e,
+                inset 0 4px 0 #f5d9b8,
+                0 8px 0 #7d6244,
+                0 10px 25px rgba(0,0,0,0.5);
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 25px;
+            font-weight: bold;
+            animation: buttonShine 3s ease-in-out infinite;
+        }
+
+        @keyframes buttonShine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .btn-login:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 0 30px rgba(212, 165, 116, 1),
+                inset 0 -4px 0 #9d7a4e,
+                inset 0 4px 0 #f5d9b8,
+                0 12px 0 #7d6244,
+                0 15px 35px rgba(0,0,0,0.6);
+            outline-color: #e8c599;
+        }
+
+        .btn-login:active {
+            transform: translateY(6px);
+            box-shadow: 
+                0 0 15px rgba(212, 165, 116, 0.8),
+                inset 0 -4px 0 #9d7a4e,
+                inset 0 4px 0 #f5d9b8,
+                0 2px 0 #7d6244;
+        }
+
+        .divider {
+            margin: 25px 0;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 2px;
+        }
+
+        .divider::before {
+            left: 0;
+            background: linear-gradient(to right, transparent, #d4a574);
+        }
+
+        .divider::after {
+            right: 0;
+            background: linear-gradient(to left, transparent, #d4a574);
+        }
+
+        .divider span {
+            background: transparent;
+            padding: 0 15px;
+            color: #5b8fd9;
+            font-size: 8px;
+            position: relative;
+            text-shadow: 
+                0 0 10px rgba(91, 143, 217, 0.6),
+                1px 1px 0 #0a1628;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(135deg, #1a2744 0%, #2c4875 100%);
+            border: 3px solid #2c4875;
+            outline: 1px solid #5b8fd9;
+            color: #5b8fd9;
+            font-family: 'Press Start 2P';
+            font-size: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-shadow: 
+                0 0 8px rgba(91, 143, 217, 0.5),
+                1px 1px 0 #0a1628;
+            box-shadow: 
+                0 0 15px rgba(91, 143, 217, 0.3),
+                0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .social-btn:hover {
+            background: linear-gradient(135deg, #2c4875 0%, #3d5a8f 100%);
+            outline-color: #d4a574;
+            color: #d4a574;
+            transform: translateY(-3px);
+            box-shadow: 
+                0 0 25px rgba(212, 165, 116, 0.6),
+                0 6px 15px rgba(0,0,0,0.5);
+            text-shadow: 
+                0 0 10px rgba(212, 165, 116, 0.6),
+                1px 1px 0 #0a1628;
+        }
+
+        .social-btn:active {
+            transform: translateY(0);
+        }
+
+        .register-link {
+            font-size: 8px;
+            color: #5b8fd9;
+            text-shadow: 
+                0 0 8px rgba(91, 143, 217, 0.4),
+                1px 1px 0 #0a1628;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .register-link a {
+            color: #d4a574;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-shadow: 
+                0 0 8px rgba(212, 165, 116, 0.4),
+                1px 1px 0 #0a1628;
+        }
+
+        .register-link a:hover {
+            color: #e8c599;
+            text-shadow: 
+                0 0 15px rgba(212, 165, 116, 0.8),
+                1px 1px 0 #0a1628;
+        }
+
+        .back-home {
+            font-size: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-home a {
+            color: #5b8fd9;
+            text-decoration: none;
+            text-shadow: 
+                0 0 8px rgba(91, 143, 217, 0.4),
+                1px 1px 0 #0a1628;
+            transition: all 0.3s ease;
+        }
+
+        .back-home a:hover {
+            color: #d4a574;
+            text-shadow: 
+                0 0 12px rgba(212, 165, 116, 0.6),
+                1px 1px 0 #0a1628;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 35px 30px;
+                max-width: 90%;
+            }
+
+            h1 { font-size: 18px; }
+
+            .bee-1, .bee-2 { display: none; }
+
+            .enderman { width: 70px; }
+
+            .floating-block { width: 25px; height: 25px; }
+        }
+
+        /* Animación de entrada espectacular */
+        @keyframes epicEntry {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-15deg);
+                filter: blur(10px);
+            }
+            60% {
+                transform: scale(1.1) rotate(3deg);
+            }
+            80% {
+                transform: scale(0.95) rotate(-2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+                filter: blur(0px);
+            }
+        }
+
+        .login-container {
+            animation: epicEntry 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
     </style>
 </head>
 <body>
 
-    <!-- Abeja 1: GIF actualizado a uno libre de la wiki de Minecraft -->
-    <img src="https://minecraft.wiki/images/Bee_Fly.gif" 
-         onerror="this.src='https://i.imgur.com/K3pB58p.gif'" 
+    <img src="https://media.tenor.com/bYCLjb90G6EAAAAM/bee-minecraft.gif" 
+         onerror="this.style.display='none'" 
          class="gif-decor bee-1" alt="Bee">
     
-    <!-- Abeja 2: GIF actualizado a uno libre de la wiki de Minecraft -->
-    <img src="https://minecraft.wiki/images/Bee_Fly.gif" 
-         onerror="this.src='https://raw.githubusercontent.com/Anuken/Mindustry/master/core/assets/sprites/creatures/bee.gif'" 
+    <img src="https://media.tenor.com/bYCLjb90G6EAAAAM/bee-minecraft.gif" 
+         onerror="this.style.display='none'" 
          class="gif-decor bee-2" alt="Bee">
 
-    <!-- Enderman: GIF actualizado a uno libre de la wiki de Minecraft -->
-    <img src="https://minecraft.wiki/images/Enderman_Idle.gif" 
-         onerror="this.src='https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJtZTVqemR4Znd6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6Z3R6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v0YafX7K1K6O6K5O5K/giphy.gif'"
+    <img src="https://media.tenor.com/EI_ST3TRzy4AAAAM/minecraft-enderman.gif" 
+         onerror="this.style.display='none'"
          class="gif-decor enderman" alt="Enderman">
 
     <div class="login-container">
+        <!-- Rayos de luz -->
+        <div class="light-ray ray-1"></div>
+        <div class="light-ray ray-2"></div>
+        <div class="light-ray ray-3"></div>
+
+        <!-- Bloques flotantes -->
+        <div class="floating-block block-1"></div>
+        <div class="floating-block block-2"></div>
+        <div class="floating-block block-3"></div>
+        <div class="floating-block block-4"></div>
+
         <h1>MINECRAFT</h1>
-        <form>
+        <p class="subtitle">Iniciar Sesión</p>
+        
+        <form id="loginForm" onsubmit="handleLogin(event)">
             <div class="form-group">
                 <label>JUGADOR</label>
-                <input type="text" placeholder="Steve...">
+                <input type="text" id="username" placeholder="Steve..." required>
             </div>
+            
             <div class="form-group">
                 <label>CONTRASEÑA</label>
-                <input type="password" placeholder="********">
+                <input type="password" id="password" placeholder="********" required>
             </div>
+
+            <div class="form-options">
+                <label class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <span>Recordar</span>
+                </label>
+                <a href="#" class="forgot-password">¿Olvidaste?</a>
+            </div>
+
             <button type="submit" class="btn-login">▶ JUGAR</button>
         </form>
+
+        <div class="divider">
+            <span>O usa</span>
+        </div>
+
+        <div class="social-login">
+            <button class="social-btn" type="button" onclick="loginGoogle()">
+                Google
+            </button>
+            <button class="social-btn" type="button" onclick="loginDiscord()">
+                Discord
+            </button>
+        </div>
+
+        <div class="register-link">
+            ¿Sin cuenta? <a href="#">Regístrate</a>
+        </div>
+
+        <div class="back-home">
+            <a href="pagina-completa.html">← Menú</a>
+        </div>
     </div>
 
     <script>
         function createParticles() {
-            for (let i = 0; i < 60; i++) { // Aumentado de 40 a 60 para más densidad
+            for (let i = 0; i < 60; i++) {
                 let p = document.createElement('div');
                 p.className = 'particle';
                 p.style.left = Math.random() * 100 + '%';
                 p.style.animationDelay = Math.random() * 8 + 's';
                 p.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                p.style.opacity = Math.random() * 0.8 + 0.2; // Opacidad variable para más dinamismo
-                p.style.transform = `scale(${Math.random() * 0.5 + 0.5})`; // Tamaño variable
+                p.style.opacity = Math.random() * 0.8 + 0.2;
+                p.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
                 document.body.appendChild(p);
             }
         }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            
+            console.log('Login attempt:', { username, password, remember });
+            
+            if (username && password) {
+                const btn = event.target.querySelector('.btn-login');
+                btn.textContent = '✓ ENTRANDO...';
+                btn.style.background = 'linear-gradient(135deg, #e8c599 0%, #d4a574 100%)';
+                
+                setTimeout(() => {
+                    alert('¡Bienvenido al mundo de Minecraft!');
+                }, 800);
+            } else {
+                alert('Por favor completa todos los campos');
+            }
+        }
+
+        function loginGoogle() {
+            alert('Iniciando sesión con Google...');
+        }
+
+        function loginDiscord() {
+            alert('Iniciando sesión con Discord...');
+        }
+
         createParticles();
+
+        const inputs = document.querySelectorAll('input[type="text"], input[type="password"]');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        let isSubmitting = false;
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            if (isSubmitting) {
+                e.preventDefault();
+                return false;
+            }
+            isSubmitting = true;
+            setTimeout(() => { isSubmitting = false; }, 2000);
+        });
     </script>
 </body>
 </html>
