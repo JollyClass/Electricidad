@@ -3,25 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Ondas Electromagnéticas</title>
-    
+    <title>Minecraft Login</title>
     <style>
-        /* Variables CSS para manejo de color */
-        :root {
-            --color-primary: #6366f1;
-            --color-primary-dark: #4f46e5;
-            --color-secondary: #10b981;
-            --color-secondary-dark: #059669;
-            --color-background: #0f172a;
-            --color-card-bg: #1e293b;
-            --color-card-bg-light: #334155;
-            --color-text: #e2e8f0;
-            --color-text-muted: #94a3b8;
-            --color-wave: #fbbf24;
-            --color-accent: #ec4899;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-        /* Estilos Globales */
         * {
             margin: 0;
             padding: 0;
@@ -29,1461 +14,160 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: var(--color-text);
-            line-height: 1.6;
+            /* Fuente corregida */
+            font-family: 'Press Start 2P', cursive; 
+            background: url('https://i.postimg.cc/Nff2cbJN/logo.png') center/cover no-repeat fixed;
             min-height: 100vh;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 50 Q 25 30, 50 50 T 100 50" stroke="rgba(255,255,255,0.1)" fill="none" stroke-width="2"/></svg>');
-            opacity: 0.3;
-        }
-
-        header h1 {
-            margin-bottom: 10px;
-            font-size: 2.5em;
-            font-weight: 700;
-            position: relative;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        header p {
-            font-size: 1.1em;
-            opacity: 0.95;
-            position: relative;
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: 350px 1fr;
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 0 20px;
-            gap: 25px;
-        }
-
-        /* Estilos de Secciones y Controles */
-        .controls, .visualization {
-            background: var(--color-card-bg);
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .controls {
-            backdrop-filter: blur(10px);
-        }
-
-        h2 {
-            color: var(--color-wave);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            font-size: 1.4em;
-            font-weight: 600;
-            border-bottom: 2px solid var(--color-primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Estilos para los Controles */
-        .control-group {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: var(--color-card-bg-light);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .control-group:hover {
-            border-color: var(--color-primary);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-        }
-
-        .control-group label {
-            display: inline-flex; 
-            align-items: center; 
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--color-text);
-            font-size: 0.95em;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 5px;
-            background: linear-gradient(to right, var(--color-primary), var(--color-accent));
-            outline: none;
-            opacity: 0.9;
-            transition: opacity 0.2s;
-            margin-top: 10px;
-            -webkit-appearance: none;
-        }
-
-        input[type="range"]:hover {
-            opacity: 1;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-            box-shadow: 0 4px 12px var(--color-primary);
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        select {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            background: var(--color-background);
-            color: var(--color-text);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            font-size: 0.95em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        select:hover, select:focus {
-            border-color: var(--color-primary);
-            outline: none;
-        }
-
-        .valor-display {
-            display: inline-block;
-            background: var(--color-primary);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9em;
-            margin-left: 10px;
-            min-width: 80px;
-            text-align: center;
-        }
-
-        /* Estilos para el Botón principal */
-        #iniciar-simulacion {
-            background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-dark));
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            margin-top: 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1.1em;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        #iniciar-simulacion:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        #iniciar-simulacion:active {
-            transform: translateY(0);
-        }
-
-        /* Estilos para el Área de Visualización */
-        #wave-display {
-            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
-            border: 2px solid var(--color-wave);
-            border-radius: 12px;
-            overflow: hidden;
-            display: block;
-            box-shadow: 0 0 30px rgba(251, 191, 36, 0.3), inset 0 0 30px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
-
-        #wave-display::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--color-wave), transparent);
-            animation: scan 3s linear infinite;
-        }
-
-        @keyframes scan {
-            0%, 100% { transform: translateX(-100%); }
-            50% { transform: translateX(100%); }
-        }
-
-        #wave-canvas {
-            display: block;
-            width: 100%;
-            height: 400px;
-        }
-
-        /* Panel de Explicación */
-        #explicacion-medio {
-            margin-top: 25px;
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
-            border-left: 4px solid var(--color-primary);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        #explicacion-medio h3 {
-            margin-top: 0;
-            margin-bottom: 12px;
-            color: var(--color-wave);
-            font-size: 1.2em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        #texto-explicacion {
-            margin: 0;
-            line-height: 1.8;
-            color: var(--color-text);
-        }
-
-        #texto-explicacion strong {
-            color: var(--color-wave);
-        }
-
-        #texto-explicacion em {
-            color: var(--color-text-muted);
-            font-size: 0.95em;
-        }
-
-        /* Estilos para las ecuaciones */
-        .ecuacion-box {
-            background: rgba(0, 0, 0, 0.3);
-            border: 2px solid var(--color-accent);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.2);
-        }
-
-        .ecuacion-box h4 {
-            color: var(--color-accent);
-            margin: 0 0 10px 0;
-            font-size: 1em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .ecuacion {
-            background: rgba(251, 191, 36, 0.1);
-            padding: 10px 15px;
-            border-radius: 8px;
-            border-left: 3px solid var(--color-wave);
-            margin: 8px 0;
-            font-size: 1.05em;
-            color: var(--color-wave);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .ecuacion-descripcion {
-            font-size: 0.9em;
-            color: var(--color-text-muted);
-            margin-top: 5px;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .variable {
-            color: var(--color-primary);
-            font-weight: 600;
-        }
-
-        .ecuacion-explicacion {
-            background: rgba(16, 185, 129, 0.1);
-            border-left: 3px solid var(--color-secondary);
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 6px;
-            font-size: 0.92em;
-        }
-
-        .ecuacion-explicacion strong {
-            color: var(--color-secondary);
-        }
-
-        /* Calculadora de Longitud de Onda */
-        .calculadora {
-            background: var(--color-card-bg);
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 25px;
-            animation: fadeIn 0.6s ease;
-            animation-delay: 0.2s;
-        }
-
-        .calc-input-group {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: var(--color-card-bg-light);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .calc-input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--color-text);
-        }
-
-        .calc-input-group input,
-        .calc-input-group select {
-            width: 100%;
-            padding: 12px;
-            background: var(--color-background);
-            color: var(--color-text);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
-
-        .calc-input-group input:focus,
-        .calc-input-group select:focus {
-            border-color: var(--color-primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .calc-button {
-            background: linear-gradient(135deg, var(--color-accent), #be185d);
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 12px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1.05em;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 10px;
-        }
-
-        .calc-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
-        }
-
-        .calc-resultado {
-            margin-top: 20px;
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(236, 72, 153, 0.1));
-            border: 2px solid var(--color-wave);
-            border-radius: 12px;
-            display: none;
-        }
-
-        .calc-resultado.show {
-            display: block;
-            animation: slideDown 0.4s ease;
-        }
-
-        .calc-resultado h4 {
-            color: var(--color-wave);
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .resultado-valor {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: var(--color-wave);
-            margin: 15px 0;
-            text-align: center;
-            text-shadow: 0 2px 10px rgba(251, 191, 36, 0.5);
-        }
-
-        .resultado-detalles {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-size: 0.95em;
-            line-height: 1.8;
-        }
-
-        .grid-calculadoras {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-top: 25px;
-        }
-
-        /* Estilos Específicos para el Botón de Información (?) */
-        .info-btn {
-            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-            color: white;
-            border: none;
-            border-radius: 50%; 
-            width: 22px;
-            height: 22px;
-            text-align: center;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-left: 8px; 
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+            padding: 20px;
+            position: relative;
+            overflow: hidden; /* Evita que las abejas creen barras de scroll */
         }
 
-        .info-btn:hover {
-            transform: scale(1.1) rotate(15deg);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
+        /* Overlay oscuro */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
         }
 
-        /* Estilo para el texto de información */
-        .info-text {
-            display: none; 
-            background: rgba(16, 185, 129, 0.1);
-            border-left: 3px solid var(--color-secondary);
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 0.9em;
-            color: var(--color-text);
-            border-radius: 8px;
-            animation: slideDown 0.3s ease;
+        /* Abejas flotantes corregidas */
+        .bee {
+            position: fixed;
+            width: 80px;
+            height: auto;
+            z-index: 2; /* Por encima del overlay */
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+            image-rendering: pixelated;
         }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .bee-1 {
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
         }
 
-        #check-frecuencia:checked ~ #info-frecuencia,
-        #check-amplitud:checked ~ #info-amplitud {
-            display: block;
+        .bee-2 {
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+            transform: scaleX(-1); /* Volteamos la abeja */
         }
 
-        /* Pie de Página */
-        footer {
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(0px) rotate(-5deg); }
+            75% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        /* Enderman decorativo corregido */
+        .enderman {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 120px;
+            height: auto;
+            z-index: 2;
+            opacity: 0.8;
+            animation: teleport 8s ease-in-out infinite;
+            pointer-events: none;
+            image-rendering: pixelated;
+        }
+
+        @keyframes teleport {
+            0%, 90%, 100% { opacity: 0.8; transform: scale(1); }
+            92% { opacity: 0; transform: scale(0); }
+            95% { opacity: 0.8; transform: scale(1.1) translateX(20px); }
+        }
+
+        .login-container {
+            background: rgba(61, 43, 31, 0.95);
+            border: 8px solid #8B4513;
+            box-shadow: 0 0 0 4px #654321, 0 20px 60px rgba(0, 0, 0, 0.8);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            position: relative;
+            z-index: 10;
+            image-rendering: pixelated;
+        }
+
+        .login-header h1 {
+            font-size: 20px;
+            color: #FFD700;
             text-align: center;
-            padding: 25px 0;
-            margin-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--color-text-muted);
-            font-size: 0.9em;
+            text-shadow: 4px 4px 0 #000;
+            margin-bottom: 20px;
         }
 
-        /* Animaciones sutiles */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .login-header p {
+            color: #AAA;
+            font-size: 10px;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .controls, .visualization {
-            animation: fadeIn 0.6s ease;
+        .form-group { margin-bottom: 20px; }
+        .form-group label { color: white; font-size: 10px; display: block; margin-bottom: 10px; }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 4px solid #555;
+            color: #55FF55;
+            font-family: 'Press Start 2P';
+            font-size: 10px;
         }
 
-        .visualization {
-            animation-delay: 0.1s;
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: #3c8527;
+            border: 4px solid #000;
+            color: white;
+            font-family: 'Press Start 2P';
+            cursor: pointer;
+            box-shadow: inset -4px -4px 0 #1a3d11;
         }
 
-        @media (max-width: 1024px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            
-            .grid-calculadoras {
-                grid-template-columns: 1fr;
-            }
-            
-            header h1 {
-                font-size: 2em;
-            }
-        }
+        .btn-login:hover { background: #47a02e; }
 
-        @media (max-width: 768px) {
-            header {
-                padding: 30px 15px;
-            }
-            
-            header h1 {
-                font-size: 1.8em;
-            }
-            
-            .container {
-                padding: 0 15px;
-                gap: 20px;
-            }
-            
-            #wave-canvas {
-                height: 300px;
-            }
-        }
+        /* ... El resto de tus estilos se mantienen igual ... */
     </style>
 </head>
 <body>
-    <header>
-        <h1>🌌 Simulador de Ondas Electromagnéticas</h1>
-        <p>Ajusta los parámetros y observa la propagación en diferentes medios</p>
-    </header>
+    <img src="https://minecraft.wiki/images/Bee_Fly.gif" alt="Bee" class="bee bee-1">
+    <img src="https://minecraft.wiki/images/Bee_Fly.gif" alt="Bee" class="bee bee-2">
 
-    <main class="container">
-        <section class="controls">
-            <h2>⚙️ Controles de Onda</h2>
-            
-            <div class="control-group">
-                <input type="checkbox" id="check-frecuencia" class="info-toggle" hidden>
-                <label for="check-frecuencia" class="info-btn">?</label> 
-                
-                <label for="frecuencia">
-                    Frecuencia (Hz)
-                    <span id="frecuencia-valor" class="valor-display">50</span>
-                </label>
-                <input type="range" id="frecuencia" name="frecuencia" min="10" max="100" value="50">
-                
-                <p class="info-text" id="info-frecuencia">
-                    La <strong>Frecuencia (f)</strong> es el número de oscilaciones que pasan por un punto en un segundo. 
-                    A mayor frecuencia, la <strong>Longitud de Onda (λ) disminuye</strong>, haciendo la onda más comprimida.
-                </p>
+    <img src="https://minecraft.wiki/images/Enderman_Idle.gif" alt="Enderman" class="enderman">
+
+    <div class="login-container">
+        <div class="login-header">
+            <h1>MINECRAFT</h1>
+            <p>Iniciar Sesión</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>JUGADOR</label>
+                <input type="text" placeholder="Steve..." required>
             </div>
-
-            <div class="control-group">
-                <input type="checkbox" id="check-amplitud" class="info-toggle" hidden>
-                <label for="check-amplitud" class="info-btn">?</label> 
-
-                <label for="amplitud">
-                    Campo Eléctrico (V/m)
-                    <span id="amplitud-valor" class="valor-display">100 V/m</span>
-                </label>
-                <input type="range" id="amplitud" name="amplitud" min="0.1" max="1000" step="0.1" value="100">
-
-                <p class="info-text" id="info-amplitud">
-                    La <strong>Amplitud (E₀)</strong> es la intensidad máxima del campo eléctrico medida en Voltios por metro (V/m). 
-                    Determina la <strong>potencia</strong> e <strong>intensidad</strong> de la onda. La intensidad es proporcional a E₀².
-                </p>
+            <div class="form-group">
+                <label>CONTRASEÑA</label>
+                <input type="password" placeholder="********" required>
             </div>
-            
-            <div class="control-group" style="background: rgba(99, 102, 241, 0.1); border-color: var(--color-primary);">
-                <label for="amplitud-preset">📡 Ejemplos de Amplitudes:</label>
-                <select id="amplitud-preset" name="amplitud-preset">
-                    <option value="">-- Selecciona un ejemplo --</option>
-                    <option value="0.1">Señal WiFi (~0.1 V/m)</option>
-                    <option value="1">Señal celular (~1 V/m)</option>
-                    <option value="10">Emisora FM (~10 V/m)</option>
-                    <option value="100">Microondas (~100 V/m)</option>
-                    <option value="600">Luz solar (~600 V/m)</option>
-                    <option value="1000">Láser potente (~1000 V/m)</option>
-                </select>
-            </div>
-            
-            <h2>🌐 Medio de Propagación</h2>
-            <div class="control-group">
-                <label for="medio">Seleccionar Medio (Índice de Refracción n)</label>
-                <select id="medio" name="medio">
-                    <option value="1.00">🌌 Vacío (n≈1.00)</option>
-                    <option value="1.0003">🌬️ Aire (n≈1.0003)</option>
-                    <option value="1.33">💧 Agua (n≈1.33)</option>
-                    <option value="1.52">🔍 Vidrio (n≈1.52)</option>
-                </select>
-            </div>
-            
-            <button id="iniciar-simulacion">▶ Iniciar Simulación</button>
-        </section>
-
-        <section class="visualization">
-            <h2>✨ Visualización de Onda</h2>
-            <div id="wave-display">
-                <canvas id="wave-canvas"></canvas>
-            </div>
-            
-            <div id="explicacion-medio">
-                <h3>📖 Comportamiento de la Onda</h3>
-                <p id="texto-explicacion">
-                    Selecciona un medio para ver cómo afecta la propagación de la onda electromagnética.
-                </p>
-            </div>
-        </section>
-    </main>
-
-    <div class="grid-calculadoras">
-        <section class="calculadora">
-            <h2>🧮 Calculadora de Longitud de Onda</h2>
-            <p style="color: var(--color-text-muted); margin-bottom: 20px;">
-                Calcula la longitud de onda (λ) de una onda electromagnética en diferentes medios.
-            </p>
-
-            <div class="calc-input-group">
-                <label for="calc-frecuencia">Frecuencia (Hz):</label>
-                <input type="number" id="calc-frecuencia" placeholder="Ej: 500000000" value="500000000" min="1">
-            </div>
-
-            <div class="calc-input-group">
-                <label for="calc-medio">Medio de propagación:</label>
-                <select id="calc-medio">
-                    <option value="1.00">🌌 Vacío (n = 1.00)</option>
-                    <option value="1.0003">🌬️ Aire (n = 1.0003)</option>
-                    <option value="1.33">💧 Agua (n = 1.33)</option>
-                    <option value="1.52">🔍 Vidrio (n = 1.52)</option>
-                    <option value="2.42">💎 Diamante (n = 2.42)</option>
-                    <option value="custom">✏️ Personalizado</option>
-                </select>
-            </div>
-
-            <div class="calc-input-group" id="calc-custom-n" style="display: none;">
-                <label for="calc-n-custom">Índice de refracción personalizado (n):</label>
-                <input type="number" id="calc-n-custom" placeholder="Ej: 1.5" value="1.5" min="1" step="0.01">
-            </div>
-
-            <button class="calc-button" onclick="calcularLongitudOnda()">🔍 Calcular Longitud de Onda</button>
-
-            <div id="calc-resultado" class="calc-resultado">
-                <h4>📊 Resultado del Cálculo</h4>
-                <div class="resultado-valor" id="resultado-lambda">λ = 0.6 m</div>
-                <div class="resultado-detalles" id="resultado-detalles"></div>
-            </div>
-        </section>
-
-        <section class="calculadora">
-            <h2>⚡ Calculadora de Frecuencia</h2>
-            <p style="color: var(--color-text-muted); margin-bottom: 20px;">
-                Calcula la frecuencia (f) conociendo la longitud de onda.
-            </p>
-
-            <div class="calc-input-group">
-                <label for="calc-lambda">Longitud de onda (metros):</label>
-                <input type="number" id="calc-lambda" placeholder="Ej: 0.6" value="0.6" min="0.000001" step="0.000001">
-            </div>
-
-            <div class="calc-input-group">
-                <label for="calc-medio-freq">Medio de propagación:</label>
-                <select id="calc-medio-freq">
-                    <option value="1.00">🌌 Vacío (n = 1.00)</option>
-                    <option value="1.0003">🌬️ Aire (n = 1.0003)</option>
-                    <option value="1.33">💧 Agua (n = 1.33)</option>
-                    <option value="1.52">🔍 Vidrio (n = 1.52)</option>
-                    <option value="2.42">💎 Diamante (n = 2.42)</option>
-                    <option value="custom">✏️ Personalizado</option>
-                </select>
-            </div>
-
-            <div class="calc-input-group" id="calc-custom-n-freq" style="display: none;">
-                <label for="calc-n-custom-freq">Índice de refracción personalizado (n):</label>
-                <input type="number" id="calc-n-custom-freq" placeholder="Ej: 1.5" value="1.5" min="1" step="0.01">
-            </div>
-
-            <button class="calc-button" onclick="calcularFrecuencia()">🔍 Calcular Frecuencia</button>
-
-            <div id="calc-resultado-freq" class="calc-resultado">
-                <h4>📊 Resultado del Cálculo</h4>
-                <div class="resultado-valor" id="resultado-freq">f = 500 MHz</div>
-                <div class="resultado-detalles" id="resultado-detalles-freq"></div>
-            </div>
-        </section>
+            <button type="submit" class="btn-login">▶ JUGAR</button>
+        </form>
     </div>
-
-    <footer>
-        <p>© 2025 Simulador de Ondas Electromagnéticas | Desarrollado con HTML, CSS & JavaScript</p>
-    </footer>
-    
-    <script>
-        // --- Referencias a Elementos HTML ---
-        const frecuenciaInput = document.getElementById('frecuencia');
-        const amplitudInput = document.getElementById('amplitud');
-        const medioSelect = document.getElementById('medio');
-        const frecuenciaValor = document.getElementById('frecuencia-valor');
-        const amplitudValor = document.getElementById('amplitud-valor');
-        const iniciarBoton = document.getElementById('iniciar-simulacion');
-        const canvas = document.getElementById('wave-canvas');
-        const textoExplicacion = document.getElementById('texto-explicacion');
-
-        // --- Variables de Simulación ---
-        let ctx;
-        let animationFrameId;
-        let isSimulating = false;
-        let time = 0;
-        let drawProgress = 0;
-
-        // Función auxiliar para obtener el valor de una variable CSS
-        function var2css(cssVar) {
-            try {
-                return getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
-            } catch (e) {
-                if (cssVar === 'var(--color-wave)') return '#fbbf24'; 
-                if (cssVar === 'var(--color-secondary)') return '#10b981';
-                return '#ccc';
-            }
-        }
-
-        // --- Ajuste del Canvas ---
-        function resizeCanvas() {
-            if (!canvas) return;
-            canvas.width = canvas.offsetWidth; 
-            canvas.height = canvas.offsetHeight;
-            if (!isSimulating) {
-                drawWave();
-            }
-        }
-
-        // --- Explicaciones según el medio ---
-        function actualizarExplicacion() {
-            const n = parseFloat(medioSelect.value);
-            const medioNombre = medioSelect.options[medioSelect.selectedIndex].text;
-            const f = parseFloat(frecuenciaInput.value);
-            const amplitudActual = parseFloat(amplitudInput.value);
-            
-            // Calcular intensidad I = (ε₀ * c * E₀²) / 2
-            const epsilon0 = 8.854e-12;
-            const c = 299792458;
-            const intensidad = (epsilon0 * c * amplitudActual * amplitudActual) / (2 * n);
-            
-            let explicacion = '';
-            let ecuaciones = '';
-            
-            if (n === 1.00) {
-                explicacion = `<strong>${medioNombre}:</strong> En el vacío, las ondas electromagnéticas viajan a su velocidad máxima: <strong>300,000 km/s</strong>. La longitud de onda es la <strong>más larga posible</strong> para la frecuencia dada.`;
-                
-                ecuaciones = `
-                    <div class="ecuacion-box">
-                        <h4>🔬 Ecuaciones en el Vacío</h4>
-                        
-                        <div class="ecuacion">
-                            E(x,t) = E₀ · sin(kx - ωt)
-                            <div class="ecuacion-descripcion">Campo eléctrico de la onda (con E₀ = ${amplitudActual.toFixed(1)} V/m)</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • <strong>E(x,t)</strong>: Campo eléctrico en la posición x y tiempo t (medido en V/m)<br>
-                            • <strong>E₀</strong>: Amplitud máxima del campo = ${amplitudActual.toFixed(1)} V/m (tu valor actual)<br>
-                            • <strong>k</strong>: Número de onda = 2π/λ (cuántos ciclos hay por metro)<br>
-                            • <strong>x</strong>: Posición en el espacio (metros)<br>
-                            • <strong>ω</strong>: Frecuencia angular = 2πf (radianes por segundo)<br>
-                            • <strong>t</strong>: Tiempo (segundos)<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> Esta ecuación te da el valor instantáneo del campo eléctrico en cualquier punto del espacio (x) y momento del tiempo (t). El término (kx - ωt) representa la fase de la onda que viaja hacia la derecha.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            I = (ε₀ · c · E₀²) / 2
-                            <div class="ecuacion-descripcion">Intensidad = ${intensidad >= 0.001 ? intensidad.toFixed(4) : intensidad.toExponential(2)} W/m²</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • <strong>I</strong>: Intensidad luminosa (potencia por área) en W/m²<br>
-                            • <strong>ε₀</strong>: Permitividad del vacío = 8.854×10⁻¹² F/m (constante universal)<br>
-                            • <strong>c</strong>: Velocidad de la luz = 3×10⁸ m/s<br>
-                            • <strong>E₀</strong>: Amplitud del campo eléctrico = ${amplitudActual.toFixed(1)} V/m<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> Esta fórmula calcula cuánta energía transporta la onda por unidad de área. Nota que la intensidad es proporcional a E₀², así que duplicar el campo eléctrico cuadruplica la intensidad. Úsala para calcular la potencia de señales electromagnéticas o la energía de la luz solar.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            λ = c/f = ${(300000000/f).toExponential(2)} m
-                            <div class="ecuacion-descripcion">Longitud de onda con f = ${f} Hz</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • <strong>λ</strong>: Longitud de onda (distancia entre dos crestas consecutivas) en metros<br>
-                            • <strong>c</strong>: Velocidad de la luz = 3×10⁸ m/s<br>
-                            • <strong>f</strong>: Frecuencia = ${f} Hz (oscilaciones por segundo)<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> Esta ecuación relaciona la velocidad, frecuencia y longitud de onda. A mayor frecuencia, menor longitud de onda. Úsala para: 1) Determinar el tamaño de antenas (λ/2 o λ/4), 2) Calcular espaciado en redes de difracción, 3) Identificar rangos del espectro (radio, microondas, luz visible, etc.).
-                        </div>
-                        
-                        <div class="ecuacion">
-                            k = 2πf/c = ${((2 * Math.PI * f) / 300000000).toExponential(2)} rad/m
-                            <div class="ecuacion-descripcion">Número de onda</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • <strong>k</strong>: Número de onda (radianes de fase por metro)<br>
-                            • Relacionado con λ por: k = 2π/λ<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> El número de onda indica qué tan "comprimida" está la onda espacialmente. Valores altos de k significan muchas oscilaciones por metro (onda comprimida). Se usa en: 1) Mecánica cuántica (momento p = ℏk), 2) Análisis de Fourier espacial, 3) Diseño de cavidades resonantes.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            ω = 2πf = ${(2 * Math.PI * f).toFixed(2)} rad/s
-                            <div class="ecuacion-descripcion">Frecuencia angular con f = ${f} Hz</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • <strong>ω</strong>: Frecuencia angular (radianes de fase por segundo)<br>
-                            • Es simplemente la frecuencia f multiplicada por 2π<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> ω mide qué tan rápido oscila la onda en el tiempo. Es más conveniente que f en matemáticas porque usa radianes. IMPORTANTE: ω NO cambia cuando la luz entra en diferentes medios, por eso el color de la luz permanece constante (el color depende de la frecuencia, no de la velocidad o longitud de onda).
-                        </div>
-                        
-                        <div class="ecuacion">
-                            v = c = 3×10⁸ m/s
-                            <div class="ecuacion-descripcion">Velocidad de propagación máxima</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • <strong>c</strong>: Velocidad de la luz en el vacío (constante universal)<br>
-                            • Es el límite de velocidad del universo<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> Esta constante aparece en innumerables fórmulas: E = mc², teoría de la relatividad, electromagnetismo. En el vacío, TODAS las ondas EM (radio, luz, rayos X) viajan a esta velocidad. Úsala para calcular: 1) Tiempos de propagación de señales (satélites, fibra óptica), 2) Distancias en astronomía (años luz), 3) Sincronización GPS.
-                        </div>
-                    </div>
-                `;
-            } else if (n === 1.0003) {
-                explicacion = `<strong>${medioNombre}:</strong> El aire tiene un índice casi idéntico al vacío. La velocidad de la luz disminuye <strong>mínimamente</strong> (≈0.03%).`;
-                
-                ecuaciones = `
-                    <div class="ecuacion-box">
-                        <h4>🔬 Ecuaciones en el Aire</h4>
-                        
-                        <div class="ecuacion">
-                            E(x,t) = E₀ · sin(knx - ωt)
-                            <div class="ecuacion-descripcion">Campo eléctrico con n = ${n}</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué cambia respecto al vacío?</strong><br>
-                            • El número de onda ahora es: k_aire = k_vacío × n = k × ${n}<br>
-                            • Como n ≈ 1, el cambio es casi imperceptible<br>
-                            • <strong>ω permanece constante</strong> (por eso el color no cambia)<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> Para efectos prácticos, las ondas en aire se comportan igual que en el vacío. Esta aproximación es válida para: 1) Transmisión inalámbrica (WiFi, radio, TV), 2) Comunicaciones por satélite, 3) Astronomía óptica desde la Tierra. Solo en mediciones de alta precisión se nota la diferencia.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            v = c/n = ${(300000000/n).toExponential(2)} m/s
-                            <div class="ecuacion-descripcion">Velocidad en el aire (99.97% de c)</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • <strong>v</strong>: Velocidad de la luz en el medio<br>
-                            • <strong>n</strong>: Índice de refracción del aire = ${n}<br>
-                            • La velocidad disminuye solo 0.03% respecto al vacío<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> Esta fórmula (v = c/n) es fundamental en óptica. Se usa para: 1) Calcular tiempos de propagación en fibras ópticas, 2) Diseñar sistemas de radar, 3) Correcciones en GPS y telecomunicaciones. El índice n siempre es ≥ 1, por lo que v ≤ c siempre.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            λ_aire = c/(nf) = ${(300000000/(n*f)).toExponential(2)} m
-                            <div class="ecuacion-descripcion">Longitud de onda en el aire</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • La longitud de onda en el aire es λ_aire = λ_vacío / n<br>
-                            • Como n ≈ 1, λ_aire ≈ λ_vacío<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> Aunque la diferencia es mínima, se debe considerar en: 1) Interferometría de precisión, 2) Calibración de instrumentos ópticos, 3) Experimentos de Michelson-Morley (histórico). Para aplicaciones cotidianas, puedes usar λ_vacío sin problemas.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            k_aire = 2πfn/c = ${((2 * Math.PI * f * n) / 300000000).toExponential(2)} rad/m
-                            <div class="ecuacion-descripcion">Número de onda en el aire</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • k aumenta ligeramente porque λ disminuye<br>
-                            • k_aire = k_vacío × n = k × ${n}<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> El pequeño cambio en k es relevante en: 1) Análisis de dispersión atmosférica, 2) Correcciones en astronomía, 3) Mediciones geodésicas de alta precisión. En la mayoría de aplicaciones de ingeniería, la diferencia es despreciable.
-                        </div>
-                    </div>
-                `;
-            } else if (n === 1.33) {
-                explicacion = `<strong>${medioNombre}:</strong> El agua es más densa. La velocidad se reduce a <strong>225,000 km/s</strong> (75% de c). La longitud de onda se <strong>comprime 33%</strong>.`;
-                
-                ecuaciones = `
-                    <div class="ecuacion-box">
-                        <h4>🔬 Ecuaciones en el Agua</h4>
-                        
-                        <div class="ecuacion">
-                            E(x,t) = E₀ · sin(knx - ωt)
-                            <div class="ecuacion-descripcion">Campo eléctrico con n = ${n}</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué cambia respecto al vacío?</strong><br>
-                            • k_agua = k_vacío × 1.33 (33% mayor, ondas más comprimidas)<br>
-                            • La onda "cabe" 1.33 veces más en el mismo espacio<br>
-                            • <strong>ω y f NO cambian</strong> (el color bajo el agua es el mismo)<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> Esta ecuación describe la luz bajo el agua. Aplicaciones: 1) Diseño de cámaras submarinas, 2) Fotografía acuática (corrección de colores por absorción), 3) Comunicación óptica submarina, 4) Estudios de ecología marina (penetración de luz).
-                        </div>
-                        
-                        <div class="ecuacion">
-                            v_agua = c/n = ${(300000000/n/1000000).toFixed(2)} × 10⁶ m/s
-                            <div class="ecuacion-descripcion">Velocidad reducida al 75% de c</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • La luz viaja 25% más lento en agua que en el vacío<br>
-                            • Esto ocurre porque los electrones del agua interactúan con los fotones<br>
-                            • No es que los fotones se "frenen", sino que son absorbidos y reemitidos<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> Esta reducción de velocidad causa efectos prácticos: 1) Los objetos bajo el agua parecen más cercanos (factor 4/3), 2) Las piscinas parecen menos profundas, 3) Diseño de lentes acuáticas, 4) Cálculo de tiempos en comunicaciones submarinas.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            λ_agua = c/(nf) = ${(300000000/(n*f)).toExponential(2)} m
-                            <div class="ecuacion-descripcion">Longitud de onda 25% más corta (compresión del 33%)</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • λ_agua = λ_vacío / 1.33 ≈ 0.75 × λ_vacío<br>
-                            • La onda se "comprime" al entrar al agua<br>
-                            • Pero la frecuencia (y el color) permanece constante<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> Este cambio es crucial en: 1) Diseño de antenas submarinas (deben ser más pequeñas), 2) Resonadores acuáticos, 3) Experimentos de interferencia en agua, 4) Cálculo de efectos Cherenkov (radiación azul en reactores nucleares).
-                        </div>
-                        
-                        <div class="ecuacion">
-                            k_agua = 2πfn/c = ${((2 * Math.PI * f * n) / 300000000).toExponential(2)} rad/m
-                            <div class="ecuacion-descripcion">Número de onda 33% mayor</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • k_agua = 1.33 × k_vacío (más radianes por metro)<br>
-                            • Indica mayor "compresión espacial" de la onda<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> El aumento de k afecta: 1) Patrones de difracción bajo el agua, 2) Diseño de redes de difracción para espectroscopía acuática, 3) Análisis de Fourier espacial en medios densos, 4) Cálculo de modos en guías de onda líquidas.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            Ley de Snell: n₁ sin(θ₁) = n₂ sin(θ₂)
-                            <div class="ecuacion-descripcion">Refracción en la interfaz agua-aire</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • <strong>n₁, n₂</strong>: Índices de refracción de ambos medios<br>
-                            • <strong>θ₁</strong>: Ángulo de incidencia (respecto a la normal)<br>
-                            • <strong>θ₂</strong>: Ángulo de refracción<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong><br>
-                            <strong>Ejemplo:</strong> Luz viajando del agua (n₁=1.33) al aire (n₂=1) con θ₁=30°<br>
-                            → 1.33 × sin(30°) = 1 × sin(θ₂)<br>
-                            → sin(θ₂) = 0.665<br>
-                            → θ₂ = 41.7°<br>
-                            <br>
-                            La luz se "dobla" alejándose de la normal al pasar a un medio menos denso. Aplicaciones: 1) Diseño de periscopios, 2) Corrección de visión submarina, 3) Fibra óptica, 4) Prismas y lentes.
-                        </div>
-                    </div>
-                `;
-            } else if (n === 1.52) {
-                explicacion = `<strong>${medioNombre}:</strong> El vidrio es muy denso. La velocidad cae a <strong>197,000 km/s</strong> (65% de c). La longitud de onda se <strong>comprime 52%</strong>.`;
-                
-                ecuaciones = `
-                    <div class="ecuacion-box">
-                        <h4>🔬 Ecuaciones en el Vidrio</h4>
-                        
-                        <div class="ecuacion">
-                            E(x,t) = E₀ · sin(knx - ωt)
-                            <div class="ecuacion-descripcion">Campo eléctrico con n = ${n}</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué cambia respecto al vacío?</strong><br>
-                            • k_vidrio = k_vacío × 1.52 (52% mayor, máxima compresión)<br>
-                            • La onda está muy "apretada" espacialmente<br>
-                            • Esto permite que lentes delgadas tengan gran poder de enfoque<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> El alto índice del vidrio permite: 1) Lentes potentes y compactas (microscopios, telescopios), 2) Prismas que separan colores eficientemente, 3) Fibra óptica con gran capacidad de transmisión, 4) Recubrimientos anti-reflejo multicapa.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            v_vidrio = c/n = ${(300000000/n/1000000).toFixed(2)} × 10⁶ m/s
-                            <div class="ecuacion-descripcion">Velocidad reducida al 65% de c</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • La luz viaja 35% más lento que en el vacío<br>
-                            • Esta gran reducción permite controlar la luz eficientemente<br>
-                            • El retardo es aprovechable en dispositivos ópticos<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> La velocidad reducida es clave en: 1) Diseño de líneas de retardo ópticas, 2) Cálculo de tiempos de propagación en fibra óptica (importante para internet de alta velocidad), 3) Medidores de índice de refracción, 4) Sincronización en sistemas láser.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            λ_vidrio = c/(nf) = ${(300000000/(n*f)).toExponential(2)} m
-                            <div class="ecuacion-descripcion">Longitud de onda 34% más corta</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • λ_vidrio = λ_vacío / 1.52 ≈ 0.66 × λ_vacío<br>
-                            • Es la mayor compresión entre los medios comunes<br>
-                            • Permite dispositivos ópticos más compactos<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> La corta longitud de onda en vidrio permite: 1) Cavidades láser más pequeñas, 2) Filtros de interferencia muy precisos, 3) Guías de onda microscópicas en chips fotónicos, 4) Mayor resolución en microscopía de inmersión.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            k_vidrio = 2πfn/c = ${((2 * Math.PI * f * n) / 300000000).toExponential(2)} rad/m
-                            <div class="ecuacion-descripcion">Número de onda 52% mayor (máxima compresión)</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • k_vidrio = 1.52 × k_vacío (muchos ciclos por metro)<br>
-                            • Mayor k significa mayor cambio de fase por distancia<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> El alto k es útil en: 1) Compensadores de fase compactos, 2) Placas retardadoras (λ/4, λ/2), 3) Interferómetros de alta resolución, 4) Moduladores electro-ópticos donde pequeños cambios de n producen grandes cambios de fase.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            θ_crítico = arcsin(1/n) = ${(Math.asin(1/n) * 180 / Math.PI).toFixed(2)}°
-                            <div class="ecuacion-descripcion">Ángulo crítico para reflexión interna total</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • <strong>θ_crítico</strong>: Ángulo máximo para que la luz escape del vidrio<br>
-                            • Si θ > ${(Math.asin(1/n) * 180 / Math.PI).toFixed(2)}°, la luz se refleja 100% internamente<br>
-                            • Solo existe cuando la luz va de medio denso a menos denso<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong><br>
-                            <strong>Ejemplo práctico:</strong> Fibra óptica<br>
-                            • Núcleo de vidrio (n=1.52) rodeado de cubierta (n=1.48)<br>
-                            • θ_c = arcsin(1.48/1.52) = 76.7°<br>
-                            • La luz con θ > 76.7° queda "atrapada" y viaja sin pérdidas<br>
-                            <br>
-                            <strong>Aplicaciones:</strong> 1) Fibras ópticas (internet global), 2) Prismas de reflexión total (binoculares), 3) Diamantes brillantes (θ_c pequeño atrapa la luz), 4) Sensores de índice de refracción.
-                        </div>
-                        
-                        <div class="ecuacion">
-                            Dispersión: n(λ) = A + B/λ² (Ecuación de Cauchy)
-                            <div class="ecuacion-descripcion">El índice varía con la longitud de onda</div>
-                        </div>
-                        <div class="ecuacion-explicacion">
-                            <strong>¿Qué representa?</strong><br>
-                            • El vidrio tiene índice diferente para cada color<br>
-                            • Luz azul (λ corta): n más alto, se desvía más<br>
-                            • Luz roja (λ larga): n más bajo, se desvía menos<br>
-                            <br>
-                            <strong>¿Cómo usarla?</strong> La dispersión cromática es responsable de: 1) Arcoíris en prismas, 2) Aberraciones cromáticas en lentes (se corrige con lentes acromáticas), 3) Espectrógrafos para análisis químico, 4) Limitación en ancho de banda de fibra óptica (se compensa con fibras especiales).
-                        </div>
-                    </div>
-                `;
-            }
-            
-            explicacion += ecuaciones;
-            explicacion += `<br><em>💡 La frecuencia NO cambia entre medios, por eso el color permanece constante.</em>`;
-            
-            textoExplicacion.innerHTML = explicacion;
-        }
-
-        // --- Funciones de Actualización de Controles ---
-        function updateValues() {
-            const amplitudVal = parseFloat(amplitudInput.value);
-            frecuenciaValor.textContent = frecuenciaInput.value;
-            amplitudValor.textContent = `${amplitudVal.toFixed(1)} V/m`;
-            
-            time = 0;
-            drawProgress = 0;
-            
-            actualizarExplicacion();
-
-            if (!isSimulating) {
-                drawWave(); 
-            }
-        }
-
-        // --- Lógica de Dibujo de la Onda ---
-        function drawWave() {
-            if (!ctx) return;
-            
-            const amplitudActual = parseFloat(amplitudInput.value);
-            const f = parseFloat(frecuenciaInput.value); 
-            const n = parseFloat(medioSelect.value);            
-            
-            const waveNumber_k = f * n * 0.05; 
-            const angularFrequency_omega = f * 0.05;
-            
-            const W = canvas.width;
-            const H = canvas.height;
-            const centerY = H / 2;
-            
-            // Escala adaptativa
-            const scaleY = (H * 0.4) / amplitudActual;
-
-            // Limpiar el Canvas
-            const gradient = ctx.createLinearGradient(0, 0, 0, H);
-            gradient.addColorStop(0, '#000000');
-            gradient.addColorStop(0.5, '#0a0a1a');
-            gradient.addColorStop(1, '#000000');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, W, H);
-
-            // Dibujar grid
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
-            ctx.lineWidth = 1;
-            for (let i = 0; i < W; i += 50) {
-                ctx.beginPath();
-                ctx.moveTo(i, 0);
-                ctx.lineTo(i, H);
-                ctx.stroke();
-            }
-            for (let i = 0; i < H; i += 50) {
-                ctx.beginPath();
-                ctx.moveTo(0, i);
-                ctx.lineTo(W, i);
-                ctx.stroke();
-            }
-
-            // Dibujar Eje central
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgba(100, 100, 150, 0.5)';
-            ctx.lineWidth = 2;
-            ctx.moveTo(0, centerY);
-            ctx.lineTo(W, centerY);
-            ctx.stroke();
-            
-            // Líneas de referencia
-            ctx.strokeStyle = 'rgba(100, 150, 100, 0.3)';
-            ctx.lineWidth = 1;
-            ctx.setLineDash([5, 5]);
-            
-            ctx.beginPath();
-            ctx.moveTo(0, centerY - (amplitudActual * scaleY));
-            ctx.lineTo(W, centerY - (amplitudActual * scaleY));
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.moveTo(0, centerY + (amplitudActual * scaleY));
-            ctx.lineTo(W, centerY + (amplitudActual * scaleY));
-            ctx.stroke();
-            
-            ctx.setLineDash([]);
-            
-            // Etiquetas
-            ctx.fillStyle = 'rgba(100, 255, 100, 0.7)';
-            ctx.font = '11px "Segoe UI"';
-            ctx.fillText(`+${amplitudActual.toFixed(0)} V/m`, 5, centerY - (amplitudActual * scaleY) - 5);
-            ctx.fillText(`-${amplitudActual.toFixed(0)} V/m`, 5, centerY + (amplitudActual * scaleY) + 15);
-
-            // Dibujar la Onda
-            const maxX = isSimulating ? W * drawProgress : W;
-            
-            ctx.shadowBlur = 15 + (amplitudActual / 100);
-            ctx.shadowColor = var2css('var(--color-wave)');
-            
-            ctx.beginPath();
-            ctx.strokeStyle = var2css('var(--color-wave)');
-            ctx.lineWidth = 3;
-            
-            for (let x = 0; x < maxX; x++) {
-                const normalizedX = x * 0.1; 
-                const E = amplitudActual * Math.sin((waveNumber_k * normalizedX) - (angularFrequency_omega * time));
-                const pixelY = centerY - (E * scaleY);
-                
-                if (x === 0) {
-                    ctx.moveTo(x, pixelY);
-                } else {
-                    ctx.lineTo(x, pixelY);
-                }
-            }
-            ctx.stroke();
-            
-            // Punto brillante
-            if (isSimulating && drawProgress < 1) {
-                const lastX = maxX;
-                const normalizedLastX = lastX * 0.1;
-                const lastE = amplitudActual * Math.sin((waveNumber_k * normalizedLastX) - (angularFrequency_omega * time));
-                const lastPixelY = centerY - (lastE * scaleY);
-                
-                ctx.shadowBlur = 20;
-                ctx.beginPath();
-                ctx.arc(lastX, lastPixelY, 6, 0, Math.PI * 2);
-                ctx.fillStyle = var2css('var(--color-wave)');
-                ctx.fill();
-                
-                ctx.shadowBlur = 30;
-                ctx.beginPath();
-                ctx.arc(lastX, lastPixelY, 10, 0, Math.PI * 2);
-                ctx.strokeStyle = var2css('var(--color-wave)');
-                ctx.lineWidth = 2;
-                ctx.globalAlpha = 0.5;
-                ctx.stroke();
-                ctx.globalAlpha = 1;
-            }
-            
-            ctx.shadowBlur = 0;
-            
-            // Calcular intensidad
-            const epsilon0 = 8.854e-12;
-            const c = 299792458;
-            const intensidad = (epsilon0 * c * amplitudActual * amplitudActual) / (2 * n);
-            
-            // Información en pantalla
-            ctx.fillStyle = 'rgba(30, 41, 59, 0.85)';
-            ctx.fillRect(10, 10, 320, 80);
-            ctx.strokeStyle = var2css('var(--color-primary)');
-            ctx.lineWidth = 2;
-            ctx.strokeRect(10, 10, 320, 80);
-            
-            ctx.fillStyle = 'white';
-            ctx.font = 'bold 13px "Segoe UI"';
-            ctx.fillText(`⚡ Campo: E₀ = ${amplitudActual.toFixed(1)} V/m`, 20, 30);
-            ctx.fillText(`📊 Frecuencia: f = ${f} Hz`, 20, 50);
-            ctx.fillText(`🌐 Medio: n = ${n}`, 20, 70);
-            
-            ctx.fillStyle = var2css('var(--color-wave)');
-            ctx.font = 'bold 12px "Segoe UI"';
-            if (intensidad >= 0.001) {
-                ctx.fillText(`💡 Intensidad: ${intensidad.toFixed(4)} W/m²`, 20, 85);
-            } else {
-                ctx.fillText(`💡 Intensidad: ${intensidad.toExponential(2)} W/m²`, 20, 85);
-            }
-        }
-
-        // --- Bucle de Animación ---
-        function animate() {
-            if (!isSimulating) return;
-            
-            if (drawProgress < 1) {
-                drawProgress += 0.015;
-                if (drawProgress > 1) drawProgress = 1;
-            } else {
-                time += 0.1;
-            }
-            
-            drawWave();
-            animationFrameId = requestAnimationFrame(animate);
-        }
-
-        // --- Control de Inicio/Detención ---
-        function toggleSimulation() {
-            isSimulating = !isSimulating;
-            if (isSimulating) {
-                drawProgress = 0;
-                time = 0;
-                iniciarBoton.innerHTML = '⏸ Detener Simulación';
-                iniciarBoton.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
-                animate();
-            } else {
-                iniciarBoton.innerHTML = '▶ Iniciar Simulación';
-                iniciarBoton.style.background = 'linear-gradient(135deg, var(--color-secondary), var(--color-secondary-dark))';
-                cancelAnimationFrame(animationFrameId);
-                drawProgress = 1;
-                drawWave(); 
-            }
-        }
-
-        // --- Event Listeners y Inicialización ---
-        document.addEventListener('DOMContentLoaded', () => {
-            if (canvas) {
-                ctx = canvas.getContext('2d');
-            }
-
-            if (!canvas || !ctx) {
-                console.error("Error: No se pudo obtener el canvas.");
-                return; 
-            }
-            
-            frecuenciaInput.addEventListener('input', updateValues);
-            amplitudInput.addEventListener('input', updateValues);
-            medioSelect.addEventListener('change', updateValues);
-            iniciarBoton.addEventListener('click', toggleSimulation);
-            
-            const amplitudPreset = document.getElementById('amplitud-preset');
-            if (amplitudPreset) {
-                amplitudPreset.addEventListener('change', function() {
-                    if (this.value) {
-                        amplitudInput.value = this.value;
-                        updateValues();
-                        this.value = '';
-                    }
-                });
-            }
-
-            resizeCanvas();
-            updateValues();
-            actualizarExplicacion();
-        });
-
-        window.addEventListener('resize', resizeCanvas);
-
-        // --- Funciones de la Calculadora ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const calcMedio = document.getElementById('calc-medio');
-            const calcCustomN = document.getElementById('calc-custom-n');
-            const calcMedioFreq = document.getElementById('calc-medio-freq');
-            const calcCustomNFreq = document.getElementById('calc-custom-n-freq');
-            
-            if (calcMedio) {
-                calcMedio.addEventListener('change', function() {
-                    calcCustomN.style.display = this.value === 'custom' ? 'block' : 'none';
-                });
-            }
-            
-            if (calcMedioFreq) {
-                calcMedioFreq.addEventListener('change', function() {
-                    calcCustomNFreq.style.display = this.value === 'custom' ? 'block' : 'none';
-                });
-            }
-        });
-
-        function calcularLongitudOnda() {
-            const frecuencia = parseFloat(document.getElementById('calc-frecuencia').value);
-            const medioSelect = document.getElementById('calc-medio');
-            let n = parseFloat(medioSelect.value);
-            
-            if (medioSelect.value === 'custom') {
-                n = parseFloat(document.getElementById('calc-n-custom').value);
-            }
-            
-            if (isNaN(frecuencia) || frecuencia <= 0) {
-                alert('Por favor ingresa una frecuencia válida');
-                return;
-            }
-            
-            if (isNaN(n) || n < 1) {
-                alert('Por favor ingresa un índice válido (≥ 1)');
-                return;
-            }
-            
-            const c = 299792458;
-            const lambda = c / (n * frecuencia);
-            const v = c / n;
-            
-            const resultadoDiv = document.getElementById('calc-resultado');
-            const lambdaDiv = document.getElementById('resultado-lambda');
-            const detallesDiv = document.getElementById('resultado-detalles');
-            
-            let lambdaStr;
-            if (lambda >= 1) {
-                lambdaStr = `λ = ${lambda.toFixed(4)} m`;
-            } else if (lambda >= 0.001) {
-                lambdaStr = `λ = ${(lambda * 1000).toFixed(4)} mm`;
-            } else if (lambda >= 0.000001) {
-                lambdaStr = `λ = ${(lambda * 1000000).toFixed(4)} µm`;
-            } else {
-                lambdaStr = `λ = ${(lambda * 1000000000).toFixed(4)} nm`;
-            }
-            
-            lambdaDiv.textContent = lambdaStr;
-            
-            const medioNombre = medioSelect.options[medioSelect.selectedIndex].text;
-            
-            detallesDiv.innerHTML = `
-                <strong>📋 Datos:</strong><br>
-                • Frecuencia: ${frecuencia.toExponential(2)} Hz<br>
-                • Medio: ${medioNombre}<br>
-                • Índice: n = ${n}<br>
-                • Velocidad: v = ${(v/1000000).toFixed(2)} × 10⁶ m/s<br>
-                <br>
-                <strong>🔬 Fórmula:</strong> λ = c / (n × f) = ${lambda.toExponential(4)} m
-            `;
-            
-            resultadoDiv.classList.add('show');
-        }
-
-        function calcularFrecuencia() {
-            const lambda = parseFloat(document.getElementById('calc-lambda').value);
-            const medioSelect = document.getElementById('calc-medio-freq');
-            let n = parseFloat(medioSelect.value);
-            
-            if (medioSelect.value === 'custom') {
-                n = parseFloat(document.getElementById('calc-n-custom-freq').value);
-            }
-            
-            if (isNaN(lambda) || lambda <= 0) {
-                alert('Por favor ingresa una longitud de onda válida');
-                return;
-            }
-            
-            if (isNaN(n) || n < 1) {
-                alert('Por favor ingresa un índice válido (≥ 1)');
-                return;
-            }
-            
-            const c = 299792458;
-            const frecuencia = c / (n * lambda);
-            const v = c / n;
-            
-            const resultadoDiv = document.getElementById('calc-resultado-freq');
-            const freqDiv = document.getElementById('resultado-freq');
-            const detallesDiv = document.getElementById('resultado-detalles-freq');
-            
-            let freqStr;
-            if (frecuencia >= 1e9) {
-                freqStr = `f = ${(frecuencia / 1e9).toFixed(4)} GHz`;
-            } else if (frecuencia >= 1e6) {
-                freqStr = `f = ${(frecuencia / 1e6).toFixed(4)} MHz`;
-            } else if (frecuencia >= 1e3) {
-                freqStr = `f = ${(frecuencia / 1e3).toFixed(4)} kHz`;
-            } else {
-                freqStr = `f = ${frecuencia.toFixed(4)} Hz`;
-            }
-            
-            freqDiv.textContent = freqStr;
-            
-            const medioNombre = medioSelect.options[medioSelect.selectedIndex].text;
-            
-            detallesDiv.innerHTML = `
-                <strong>📋 Datos:</strong><br>
-                • Longitud de onda: λ = ${lambda} m<br>
-                • Medio: ${medioNombre}<br>
-                • Índice: n = ${n}<br>
-                • Velocidad: v = ${(v/1000000).toFixed(2)} × 10⁶ m/s<br>
-                <br>
-                <strong>🔬 Fórmula:</strong> f = c / (n × λ) = ${frecuencia.toExponential(4)} Hz
-            `;
-            
-            resultadoDiv.classList.add('show');
-        }
-    </script>
 </body>
 </html>
